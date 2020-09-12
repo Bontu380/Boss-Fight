@@ -10,9 +10,16 @@ public class EnemyArm : MonoBehaviour
     private Rigidbody armRb;
     public GameObject rocketPrefab;
     public Transform firePoint;
-  
+    public float rocketForce = 5f;
 
-   
+
+   /* private void Update()
+    {
+        Quaternion currentRotation = transform.rotation;
+                
+    }
+    */
+
     private void Start()
     {
         armRb = GetComponent<Rigidbody>();
@@ -37,7 +44,9 @@ public class EnemyArm : MonoBehaviour
     public void fireRocket(Transform target)
     {
       GameObject rocket =  Instantiate(rocketPrefab, firePoint.transform.position, firePoint.transform.rotation);
-      Rocket rocketScript = rocket.GetComponent<Rocket>();
-      rocketScript.playerPos = target;
+
+      Rigidbody rocketRb = rocket.GetComponent<Rigidbody>();
+      Vector3 direction = target.position - rocket.transform.position;
+      rocketRb.AddForce(direction * rocketForce,ForceMode.VelocityChange);  
     }
 }

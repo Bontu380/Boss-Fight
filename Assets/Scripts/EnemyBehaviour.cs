@@ -36,7 +36,7 @@ public class EnemyBehaviour : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         bossAnimator = GetComponent<Animator>();
         normalEyeColor = eyes[0].GetComponent<Renderer>().material.color;
-        rocketTimeCounter = rocketCooldown;
+        rocketTimeCounter = rocketCooldown-1f;
        
     }
 
@@ -193,13 +193,14 @@ public class EnemyBehaviour : MonoBehaviour
                 yield break;
             }
 
+        if (!bossAnimator.GetCurrentAnimatorStateInfo(0).IsName("RocketLauncherSetUp"))
+        {
             bossAnimator.SetBool("deployLaunchers", true);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(bossAnimator.GetCurrentAnimatorStateInfo(0).length + bossAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime + 0.25f);
+        }
+           
 
             int i = 0;
-      
-          
-            
                 foreach (EnemyArm arm in arms)
                 {
                     if (arm != null)

@@ -63,8 +63,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPos: {fileID: 0}
+  originalPos: {x: 0, y: 0, z: 0}
   damage: 20
-  speed: 5
+  speed: 8
   rotateSpeed: 5
   explosionRadius: 1
   explosionBlastForce: 1

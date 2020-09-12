@@ -1208,6 +1208,7 @@ MonoBehaviour:
   rocketPrefab: {fileID: 5259018187621435138, guid: 0ab599b53b0a9334c9bf275be27ddcdc,
     type: 3}
   firePoint: {fileID: 1202302821}
+  rocketForce: 1
 --- !u!65 &488419616
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3574,6 +3575,7 @@ MonoBehaviour:
   rocketPrefab: {fileID: 5259018187621435138, guid: 0ab599b53b0a9334c9bf275be27ddcdc,
     type: 3}
   firePoint: {fileID: 169855696}
+  rocketForce: 1
 --- !u!65 &1076236503
 BoxCollider:
   m_ObjectHideFlags: 0
