@@ -76,7 +76,7 @@ public class Gun : MonoBehaviour
         }
         else
         {
-            // gunParticle.Play();
+            gunParticle.Play();
             nextBulletTimeCounter = 0f;
             decreaseBullet();
 
