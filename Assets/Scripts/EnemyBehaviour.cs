@@ -49,7 +49,7 @@ public class EnemyBehaviour : MonoBehaviour
             return;
         }
         /*
-        Enemies will be patrolling while there is no threat like player.
+        Enemies will be patrolling while there is no threat like the player.
 
         if (!playerOnSight)
         {
@@ -79,6 +79,7 @@ public class EnemyBehaviour : MonoBehaviour
                 enemyRb.velocity = Vector3.zero;
                 if(rocketTimeCounter >= rocketCooldown)
                 {
+                    agent.isStopped = true; ;
                     lookAtPlayer();
                     StartCoroutine(fireRockets());
                     rocketTimeCounter = 0f;
@@ -174,6 +175,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             eyes[i].GetComponent<Renderer>().material.color = normalEyeColor;
         }
+        agent.isStopped = false;
         agent.SetDestination(playerLastSeenPos);
     }
     

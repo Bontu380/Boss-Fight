@@ -6,6 +6,7 @@ public class EnemyArm : MonoBehaviour
 {
     
     public Enemy boss;
+    public GameObject firingExplosion;
     public int armHealth = 500;
     private Rigidbody armRb;
     public GameObject rocketPrefab;
@@ -44,7 +45,8 @@ public class EnemyArm : MonoBehaviour
     public void fireRocket(Transform target)
     {
       GameObject rocket =  Instantiate(rocketPrefab, firePoint.transform.position, firePoint.transform.rotation);
-
+      GameObject explosionEffect = Instantiate(firingExplosion, firePoint.transform.position, firePoint.transform.rotation);
+      Destroy(explosionEffect, 0.8f);
       Rigidbody rocketRb = rocket.GetComponent<Rigidbody>();
       Vector3 direction = target.position - rocket.transform.position;
       rocketRb.AddForce(direction * rocketForce,ForceMode.VelocityChange);  

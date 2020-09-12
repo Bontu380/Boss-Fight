@@ -7,7 +7,6 @@ public class Rocket : MonoBehaviour
     public Transform playerPos;
     public Vector3 targetPos;
     public int damage = 30;
-    public float speed = 3f;
     public float rotateSpeed = 2f;
     public float explosionRadius = 1f;
     public float explosionBlastForce = 5f;
@@ -38,12 +37,9 @@ public class Rocket : MonoBehaviour
 
 
 
-        /*Vector3 nextPos = Vector3.Lerp(transform.position, playerPos.position, speed * Time.deltaTime);
-        rocketRb.MovePosition(nextPos);
-        Vector3 direction = playerPos.position - transform.position;
-        Quaternion lookAtRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, rotateSpeed * Time.deltaTime);
-        */
+
+  
+
        // Vector3 nextPos = Vector3.MoveTowards(transform.position,targetPos,speed*Time.deltaTime);
        // rocketRb.MovePosition(nextPos);
 
