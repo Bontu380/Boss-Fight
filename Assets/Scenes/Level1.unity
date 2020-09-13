@@ -1206,7 +1206,7 @@ MonoBehaviour:
   boss: {fileID: 956646489}
   firingExplosion: {fileID: 7390879389359633489, guid: 9ad9c77550b63654793e84c5e23aee9b,
     type: 3}
-  armHealth: 1000
+  armHealth: 1
   rocketPrefab: {fileID: 5259018187621435138, guid: 0ab599b53b0a9334c9bf275be27ddcdc,
     type: 3}
   firePoint: {fileID: 1202302821}
@@ -3575,7 +3575,7 @@ MonoBehaviour:
   boss: {fileID: 956646489}
   firingExplosion: {fileID: 7390879389359633489, guid: 9ad9c77550b63654793e84c5e23aee9b,
     type: 3}
-  armHealth: 1000
+  armHealth: 1
   rocketPrefab: {fileID: 5259018187621435138, guid: 0ab599b53b0a9334c9bf275be27ddcdc,
     type: 3}
   firePoint: {fileID: 169855696}

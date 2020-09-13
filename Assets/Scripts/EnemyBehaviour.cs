@@ -216,10 +216,17 @@ public class EnemyBehaviour : MonoBehaviour
                         if (i == arms.Length)
                         {
                             bothArmsDestroyed = true;
-                            //Kılıç çıkarma animasyonu tetikle
-                            //Animasyon süresi kadar yield yap
-                        }
-                    }
+                    //----------------DENEME----------------
+                    bossAnimator.SetBool("deployLaunchers", false);
+                    bossAnimator.SetBool("pullSword", true);
+
+                    //----------------DENEME----------------
+                    
+                        
+                        //Kılıç çıkarma animasyonu tetikle
+                    //Animasyon süresi kadar yield yap
+                }
+            }
 
                 }         
     }
