@@ -216,13 +216,17 @@ public class EnemyBehaviour : MonoBehaviour
                         if (i == arms.Length)
                         {
                             bothArmsDestroyed = true;
+                            //Kılıç çıkarma animasyonu tetikle
+                            //Animasyon süresi kadar yield yap
                         }
                     }
 
-                }
-             
-            
-                   
+                }         
+    }
+
+    public IEnumerator meleeAttack()
+    {
+        yield return null;
     }
 
   
