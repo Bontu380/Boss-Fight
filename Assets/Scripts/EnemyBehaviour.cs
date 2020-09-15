@@ -12,12 +12,22 @@ public class EnemyBehaviour : MonoBehaviour
     public float rocketCooldown = 9f;
     public float rocketTimeCounter;
     public float timeBetweenRockets = 1f;
+    public float meleeRange = 8f;
+    public float minRocketLaunchRange = 3f;
+
+    public int smashDamage = 50;
+
+    public Transform attackPoint;
+    public LayerMask playerLayer;
+    public float meleeAttackColliderRadius = 3f;
+
 
     [SerializeField]
     private float playerLosingTimeCounter = 0f;
     public Transform playerPos;
     public bool playerOnSight = false;
     public bool bothArmsDestroyed = false;
+    public bool movingToPlayer = false;
     public Color angryEyeColor;
     public Color normalEyeColor;
     public GameObject[] eyes;
@@ -48,14 +58,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             return;
         }
-        /*
-        Enemies will be patrolling while there is no threat like the player.
 
-        if (!playerOnSight)
-        {
-            patrol();
-        }
-        */
 
         rocketTimeCounter += Time.deltaTime;
 
@@ -64,28 +67,43 @@ public class EnemyBehaviour : MonoBehaviour
         //Incrementing that but when i see player, i reset that counter.
         playerLosingTimeCounter += Time.deltaTime;
 
-        if (playerOnSight)
+        if (!bothArmsDestroyed)
         {
-            lookAtPlayer();
-            float distanceBetweenPlayer = Vector3.Distance(transform.position, playerPos.position);
-            if (distanceBetweenPlayer <= 3f && bothArmsDestroyed)
+            if (playerOnSight)
             {
                 lookAtPlayer();
-                //meleeAttack
-               // Debug.Log("Hitting Player");
-            }
-            else if(distanceBetweenPlayer >= 3f && !bothArmsDestroyed)
-            {
-                enemyRb.velocity = Vector3.zero;
-                if(rocketTimeCounter >= rocketCooldown)
+                float distanceBetweenPlayer = Vector3.Distance(transform.position, playerPos.position);
+                if (distanceBetweenPlayer >= minRocketLaunchRange)
                 {
-                    agent.isStopped = true; ;
-                    lookAtPlayer();
-                    StartCoroutine(fireRockets());
-                    rocketTimeCounter = 0f;
+                    enemyRb.velocity = Vector3.zero;
+                    if (rocketTimeCounter >= rocketCooldown)
+                    {
+                        agent.isStopped = true; ;
+                        lookAtPlayer();
+                        StartCoroutine(fireRockets());
+                        rocketTimeCounter = 0f;
+                        agent.isStopped = false;
+                    }
                 }
+                checkIsPlayerLost();
             }
-            checkIsPlayerLost();
+
+        }
+        else
+        {
+            float distanceBetweenPlayer = Vector3.Distance(transform.position, playerPos.position);
+            if (distanceBetweenPlayer >= meleeRange && !movingToPlayer)
+            {
+                agent.isStopped = false; //Bunu 
+                agent.SetDestination(playerPos.position);
+            }
+            else
+            {
+                movingToPlayer = false;
+                agent.isStopped = true;
+                meleeAttack();
+           
+            }
         }
     }
 
@@ -190,10 +208,10 @@ public class EnemyBehaviour : MonoBehaviour
     public IEnumerator fireRockets()
     {
 
-            if (bothArmsDestroyed)
-            {
-                yield break;
-            }
+         if (bothArmsDestroyed)
+         {
+            yield break;
+         }
 
         if (!bossAnimator.GetCurrentAnimatorStateInfo(0).IsName("RocketLauncherSetUp"))
         {
@@ -202,38 +220,42 @@ public class EnemyBehaviour : MonoBehaviour
         }
            
 
-            int i = 0;
-                foreach (EnemyArm arm in arms)
-                {
-                    if (arm != null)
-                    {
-                        arm.fireRocket(playerPos);
-                        yield return new WaitForSeconds(timeBetweenRockets);                     
-                    }
-                    else
-                    {
-                        i++;
-                        if (i == arms.Length)
-                        {
-                            bothArmsDestroyed = true;
-                    //----------------DENEME----------------
-                    bossAnimator.SetBool("deployLaunchers", false);
-                    bossAnimator.SetBool("pullSword", true);
-
-                    //----------------DENEME----------------
-                    
-                        
-                        //Kılıç çıkarma animasyonu tetikle
-                    //Animasyon süresi kadar yield yap
+        int i = 0;
+        foreach (EnemyArm arm in arms)
+        {
+           if (arm != null)
+           {
+              arm.fireRocket(playerPos);
+              yield return new WaitForSeconds(timeBetweenRockets);                     
+           }
+           else
+           {
+              i++;
+              if (i == arms.Length)
+              {
+                 bothArmsDestroyed = true;
+                 bossAnimator.SetBool("deployLaunchers", false);
+                    //bossAnimator.SetBool("pullSword", true);
+                 bossAnimator.SetTrigger("SwordTrigger");
                 }
-            }
+           }
 
-                }         
+        }         
     }
 
-    public IEnumerator meleeAttack()
-    {
-        yield return null;
+  public void meleeAttack()
+  {
+      bossAnimator.SetTrigger("SmashAttack");
+      Collider[] hit = Physics.OverlapSphere(attackPoint.position,meleeAttackColliderRadius,playerLayer);
+      
+        foreach(Collider player in hit)
+        {
+            PlayerStats script = player.GetComponent<PlayerStats>();
+            if(script!= null)
+            {
+                script.takeDamage(smashDamage);
+            }
+        }
     }
 
   
