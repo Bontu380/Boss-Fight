@@ -12,10 +12,12 @@ public class EnemyBehaviour : MonoBehaviour
     public float rocketCooldown = 9f;
     public float rocketTimeCounter;
     public float timeBetweenRockets = 1f;
-    public float meleeRange = 8f;
     public float minRocketLaunchRange = 3f;
 
+    public float meleeRange = 8f;
     public int smashDamage = 50;
+    public float meleeAttackTimeCounter;
+    public float meleeAttackCooldown = 4f;
 
     public Transform attackPoint;
     public LayerMask playerLayer;
@@ -61,6 +63,7 @@ public class EnemyBehaviour : MonoBehaviour
 
 
         rocketTimeCounter += Time.deltaTime;
+        meleeAttackTimeCounter += Time.deltaTime;
 
         checkIsPlayerOnSight();
 
@@ -99,9 +102,13 @@ public class EnemyBehaviour : MonoBehaviour
             }
             else
             {
-                movingToPlayer = false;
-                agent.isStopped = true;
-                meleeAttack();
+                if (meleeAttackTimeCounter >= meleeAttackCooldown)
+                {
+                    movingToPlayer = false;
+                    agent.isStopped = true;
+                    meleeAttack();
+                    
+                }
            
             }
         }
@@ -243,20 +250,57 @@ public class EnemyBehaviour : MonoBehaviour
         }         
     }
 
-  public void meleeAttack()
-  {
-      bossAnimator.SetTrigger("SmashAttack");
-      Collider[] hit = Physics.OverlapSphere(attackPoint.position,meleeAttackColliderRadius,playerLayer);
-      
-        foreach(Collider player in hit)
+    public void meleeAttack()
+    {
+        lookAtPlayer();
+        bossAnimator.SetTrigger("SmashAttack");
+        Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, playerLayer);
+
+        foreach (Collider player in hit)
         {
+            Debug.Log(player.transform.name);
             PlayerStats script = player.GetComponent<PlayerStats>();
-            if(script!= null)
+            if (script != null)
             {
+
                 script.takeDamage(smashDamage);
             }
         }
+
+        //meleeAttackTimeCounter = 0f;
+
+    }
+    
+/*
+    public IEnumerator meleeAttack()
+    {
+        lookAtPlayer();
+        bossAnimator.SetTrigger("SmashAttack");
+        yield return new WaitForSeconds(0.15f);
+
+        Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, playerLayer);
+
+        foreach (Collider player in hit)
+        {
+            Debug.Log(player.transform.name);
+            PlayerStats script = player.GetComponent<PlayerStats>();
+            if (script != null)
+            {
+
+                script.takeDamage(smashDamage);
+            }
+        }
+
+        meleeAttackTimeCounter = 0f;
+    }
+    */
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null) return;
+
+        Gizmos.DrawWireSphere(attackPoint.position,meleeAttackColliderRadius);
     }
 
-  
+
 }

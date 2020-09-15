@@ -2913,12 +2913,16 @@ MonoBehaviour:
   rocketCooldown: 6
   rocketTimeCounter: 0
   timeBetweenRockets: 1.5
-  meleeRange: 5
   minRocketLaunchRange: 3
+  meleeRange: 5
+  smashDamage: 50
+  meleeAttackTimeCounter: 0
+  meleeAttackCooldown: 4
   attackPoint: {fileID: 1633133131}
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
+  meleeAttackColliderRadius: 3
   playerLosingTimeCounter: 0
   playerPos: {fileID: 232929257}
   playerOnSight: 0
@@ -3198,14 +3202,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1728154681}
-  grenadeHoldingP: {fileID: 1231192386}
+  grenadeHoldingP: {x: 0, y: 0, z: 0}
   grenadePrefab: {fileID: 5740051198280309599, guid: 1df98d7051305284a9eee9e945557e27,
     type: 3}
   throwCooldown: 5
   counter: 0
   grenadeThrowForce: 20
-  grenadeThrowForceUp: 7.5
+  grenadeThrowForceUp: 3
   grenadeBar: {fileID: 999026692}
+  grenadeSpawnRange: 2
 --- !u!1 &967244384
 GameObject:
   m_ObjectHideFlags: 0
@@ -3859,36 +3864,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 488419613}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1231192385
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1231192386}
-  m_Layer: 0
-  m_Name: Grenade Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1231192386
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1231192385}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.255, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1728154678}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1288390596
 GameObject:
@@ -5239,8 +5214,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0.9659258, z: -0, w: 0.2588191}
   m_LocalPosition: {x: -0.618, y: 0.117, z: -0.249}
   m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
-  m_Children:
-  - {fileID: 1231192386}
+  m_Children: []
   m_Father: {fileID: 232929257}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

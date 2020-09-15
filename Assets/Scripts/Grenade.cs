@@ -61,9 +61,11 @@ public class Grenade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Enemy") || collision.transform.CompareTag("Arm"))
-        {
-            explode();
-        }
+        /* if (collision.transform.CompareTag("Enemy") || collision.transform.CompareTag("Arm"))
+         {
+             explode();
+         }
+         */
+        explode();
     }
 }
