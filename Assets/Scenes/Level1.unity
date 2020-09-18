@@ -2914,10 +2914,10 @@ MonoBehaviour:
   rocketTimeCounter: 0
   timeBetweenRockets: 1.5
   minRocketLaunchRange: 3
-  meleeRange: 5
+  meleeRange: 8.5
   smashDamage: 50
   meleeAttackTimeCounter: 0
-  meleeAttackCooldown: 4
+  meleeAttackCooldown: 2
   attackPoint: {fileID: 1633133131}
   playerLayer:
     serializedVersion: 2
@@ -3202,7 +3202,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1728154681}
-  grenadeHoldingP: {x: 0, y: 0, z: 0}
   grenadePrefab: {fileID: 5740051198280309599, guid: 1df98d7051305284a9eee9e945557e27,
     type: 3}
   throwCooldown: 5

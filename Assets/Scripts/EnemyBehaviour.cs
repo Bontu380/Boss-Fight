@@ -99,6 +99,7 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 agent.isStopped = false; //Bunu 
                 agent.SetDestination(playerPos.position);
+                movingToPlayer = true;
             }
             else
             {
@@ -106,7 +107,9 @@ public class EnemyBehaviour : MonoBehaviour
                 {
                     movingToPlayer = false;
                     agent.isStopped = true;
-                    meleeAttack();
+                    lookAtPlayer();
+                    bossAnimator.SetTrigger("SmashAttack");
+                    //meleeAttack();
                     
                 }
            
@@ -252,13 +255,14 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void meleeAttack()
     {
-        lookAtPlayer();
-        bossAnimator.SetTrigger("SmashAttack");
+        Debug.Log("Called meleeAttack");
+        //lookAtPlayer();
+        //bossAnimator.SetTrigger("SmashAttack");
         Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, playerLayer);
 
         foreach (Collider player in hit)
         {
-            Debug.Log(player.transform.name);
+            //Debug.Log(player.transform.name);
             PlayerStats script = player.GetComponent<PlayerStats>();
             if (script != null)
             {
@@ -267,7 +271,8 @@ public class EnemyBehaviour : MonoBehaviour
             }
         }
 
-        //meleeAttackTimeCounter = 0f;
+        meleeAttackTimeCounter = 0f;
+        //bossAnimator.ResetTrigger("SmashAttack");
 
     }
     
