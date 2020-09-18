@@ -14,6 +14,9 @@ public class EnemyBehaviour : MonoBehaviour
     public float timeBetweenRockets = 1f;
     public float minRocketLaunchRange = 3f;
 
+
+    public float meleeKnockbackForce = 5f;
+
     public float meleeRange = 8f;
     public int smashDamage = 50;
     public float meleeAttackTimeCounter;
@@ -256,23 +259,29 @@ public class EnemyBehaviour : MonoBehaviour
     public void meleeAttack()
     {
         Debug.Log("Called meleeAttack");
-        //lookAtPlayer();
-        //bossAnimator.SetTrigger("SmashAttack");
+       
         Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, playerLayer);
 
         foreach (Collider player in hit)
         {
-            //Debug.Log(player.transform.name);
             PlayerStats script = player.GetComponent<PlayerStats>();
             if (script != null)
             {
 
                 script.takeDamage(smashDamage);
             }
+
+
+            /*Rigidbody objectRb = player.GetComponent<Rigidbody>();
+            if (objectRb != null)
+            {
+                objectRb.AddExplosionForce(meleeKnockbackForce, attackPoint.transform.position, meleeAttackColliderRadius,100f,ForceMode.VelocityChange);
+            }*/
+
         }
 
         meleeAttackTimeCounter = 0f;
-        //bossAnimator.ResetTrigger("SmashAttack");
+     
 
     }
     
