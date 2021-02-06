@@ -99,6 +99,7 @@ public class GrapplingHook : MonoBehaviour
         else if(hookState == HookState.HookOnItsWay)
         {
             //Hook targete dogru gidecek
+            hookRenderer.SetPosition(0, hookHolster.position);
             hookRenderer.SetPosition(1, hook.transform.position);
             
         }
