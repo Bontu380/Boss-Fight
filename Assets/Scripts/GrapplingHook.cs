@@ -24,6 +24,8 @@ public class GrapplingHook : MonoBehaviour
     public float hookPullingSpeed = 10f;
 
 
+    /* Fizik denemesi */
+    public Rigidbody playerRb;
 
 
 
@@ -77,9 +79,11 @@ public class GrapplingHook : MonoBehaviour
             //Playeri ilerlet
             Vector3 nextPos = Vector3.MoveTowards(player.transform.position, targetHitPosition, Time.deltaTime * hookGoingSpeed);
 
-            player.transform.position = nextPos;
+            //player.transform.position = nextPos;
+            playerRb.MovePosition(nextPos);
 
-            float distanceBetweenPlayerAndTarget = Vector3.Distance(player.transform.position, targetHitPosition);
+            //float distanceBetweenPlayerAndTarget = Vector3.Distance(player.transform.position, targetHitPosition);
+            float distanceBetweenPlayerAndTarget = Vector3.Distance(playerRb.position, targetHitPosition);
             if (distanceBetweenPlayerAndTarget <= releaseHookOffset)
             {
                 resetHook();
