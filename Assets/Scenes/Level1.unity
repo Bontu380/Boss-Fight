@@ -532,7 +532,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232929251}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.9659258, z: -0, w: 0.2588191}
   m_LocalPosition: {x: 0, y: 1.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -540,8 +540,8 @@ Transform:
   - {fileID: 963194228}
   - {fileID: 245816024}
   - {fileID: 714482310}
-  m_Father: {fileID: 1433084542}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
 --- !u!114 &232929259
 MonoBehaviour:
@@ -3579,7 +3579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd347f3e37b28f4c9da9ed07ac52e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 232929251}
   hook: {fileID: 526055535}
   hookRenderer: {fileID: 963194232}
   grappleAvailableLayer:
@@ -3590,7 +3589,7 @@ MonoBehaviour:
   releaseHookOffset: 1
   hookGrabOffset: 1
   hookGoingSpeed: 150
-  hookPullingSpeed: 15
+  hookPullingSpeed: 64
   playerRb: {fileID: 232929252}
 --- !u!120 &963194232
 LineRenderer:
@@ -5234,7 +5233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1433084542
 Transform:
   m_ObjectHideFlags: 0
@@ -5245,10 +5244,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0.9659258, z: 0, w: 0.2588191}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 232929257}
+  m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
 --- !u!1001 &1460483893
 PrefabInstance:

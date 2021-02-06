@@ -9,8 +9,6 @@ public class GrapplingHook : MonoBehaviour
     private HookState hookState;
     private Vector3 targetHitPosition;
     
-
-    public GameObject player;
     public GameObject hook;
     public LineRenderer hookRenderer;
     public LayerMask grappleAvailableLayer;
@@ -23,8 +21,6 @@ public class GrapplingHook : MonoBehaviour
     public float hookGoingSpeed = 20f;
     public float hookPullingSpeed = 10f;
 
-
-    /* Fizik denemesi */
     public Rigidbody playerRb;
 
 
@@ -76,17 +72,15 @@ public class GrapplingHook : MonoBehaviour
         }
         else if(hookState == HookState.PullingPlayer)
         {
-            //Playeri ilerlet
-            Vector3 nextPos = Vector3.MoveTowards(player.transform.position, targetHitPosition, Time.deltaTime * hookGoingSpeed);
+    
+            Vector3 nextPos = Vector3.MoveTowards(playerRb.position, targetHitPosition, Time.deltaTime * hookPullingSpeed);
 
-            //player.transform.position = nextPos;
             playerRb.MovePosition(nextPos);
-
-            //float distanceBetweenPlayerAndTarget = Vector3.Distance(player.transform.position, targetHitPosition);
+          
             float distanceBetweenPlayerAndTarget = Vector3.Distance(playerRb.position, targetHitPosition);
             if (distanceBetweenPlayerAndTarget <= releaseHookOffset)
             {
-                resetHook();
+                resetHook();             
                 hookState = HookState.Idle;
             }
         }
