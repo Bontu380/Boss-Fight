@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42cf7dc17068e8845aaa3d839e2ce6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 177311953}
+  animator: {fileID: 232929258}
   firePoint: {fileID: 2011558807}
   playerCamera: {fileID: 963194227}
   gunParticle: {fileID: 1862029314}
@@ -215,37 +215,6 @@ MonoBehaviour:
   fireRateRatio: 0.12
   reloadTime: 1.8
   currentBullet: 0
---- !u!1 &153106825
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 153106826}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &153106826
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 153106825}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.549992, y: 2.1822197, z: -14.7574}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 232929257}
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &169855695
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,8 +284,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 177311951}
-  - component: {fileID: 177311952}
-  - component: {fileID: 177311953}
   m_Layer: 0
   m_Name: WeaponHolder
   m_TagString: Untagged
@@ -339,37 +306,6 @@ Transform:
   m_Father: {fileID: 963194228}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &177311952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 177311950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c117ad37121e714a953d9c9c25155a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!95 &177311953
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 177311950}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dacec205485a79d43ba74b0eed8446c3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &190922024
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +416,7 @@ GameObject:
   - component: {fileID: 232929253}
   - component: {fileID: 232929252}
   - component: {fileID: 232929259}
+  - component: {fileID: 232929258}
   m_Layer: 12
   m_Name: Bean
   m_TagString: Player
@@ -593,16 +530,35 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232929251}
   m_LocalRotation: {x: -0, y: 0.9659258, z: -0, w: 0.2588191}
-  m_LocalPosition: {x: -9.549992, y: -1.0522197, z: 14.7574}
+  m_LocalPosition: {x: 0, y: 1.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1728154678}
   - {fileID: 963194228}
   - {fileID: 245816024}
   - {fileID: 714482310}
-  m_Father: {fileID: 153106826}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
+--- !u!95 &232929258
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232929251}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8d32faefb373d4b4e9e8b76db2477490, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &232929259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1629,8 +1585,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526055535}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1598897828}
@@ -1642,7 +1598,7 @@ Transform:
   - {fileID: 173995118}
   m_Father: {fileID: 524576054}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!1 &554896399
 GameObject:
   m_ObjectHideFlags: 0
@@ -3315,7 +3271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &956646488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3651,6 +3607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd347f3e37b28f4c9da9ed07ac52e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 232929258}
   hook: {fileID: 526055535}
   hookCollisionPoint: {fileID: 1598897828}
   hookCablePoint: {fileID: 173995118}
@@ -3665,6 +3622,7 @@ MonoBehaviour:
   hookGoingSpeed: 150
   hookPullingSpeed: 64
   playerRb: {fileID: 232929252}
+  hookLocalTransform: {fileID: 526055536}
 --- !u!120 &963194232
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -6303,7 +6261,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728154677}
   m_LocalRotation: {x: -0, y: -0.9659258, z: -0, w: 0.2588191}
-  m_LocalPosition: {x: -0.6179999, y: 0.116999984, z: -0.24899995}
+  m_LocalPosition: {x: -0.6179999, y: 0.117, z: -0.249}
   m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
   m_Children: []
   m_Father: {fileID: 232929257}
@@ -12974,7 +12932,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4911327475116579456}
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0.301, y: 0.7522001, z: 0.217}
+  m_LocalPosition: {x: 0.301, y: 0.7522, z: 0.217}
   m_LocalScale: {x: 0.07333334, y: 0.07333334, z: 0.044}
   m_Children:
   - {fileID: 6810728650743550205}

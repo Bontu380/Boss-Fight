@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class GrapplingHook : MonoBehaviour
 {
-    enum HookState {Idle,HookOnItsWay,PullingPlayer};
+    enum HookState { Idle, HookOnItsWay, PullingPlayer };
+
+    public Animator animator;
 
     private HookState hookState;
     private Vector3 targetHitPosition;
 
-    
+
     public GameObject hook;
     public Transform hookCollisionPoint;
     public Transform hookCablePoint;
@@ -27,48 +29,52 @@ public class GrapplingHook : MonoBehaviour
 
     public Rigidbody playerRb;
 
-
-
+    public Transform hookLocalTransform;
 
     void Start()
     {
         hookState = HookState.Idle;
         hookRenderer.enabled = false;
+
+        Debug.Log(hookLocalTransform.localPosition);
+        Debug.Log(hookLocalTransform.localEulerAngles);
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if(hookState == HookState.Idle)
+            if (hookState == HookState.Idle)
             {
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, transform.forward, out hit, hookDistance))
                 {
-                    if (((1<<hit.transform.gameObject.layer) & grappleAvailableLayer) != 0)
+                    if (((1 << hit.transform.gameObject.layer) & grappleAvailableLayer) != 0)
                     {
                         targetHitPosition = hit.point;
 
-                      
+
                         hook.transform.LookAt(hit.point);
 
-                        hook.transform.parent = null;
+                        //hook.transform.parent = null;
                         hookRenderer.enabled = true;
 
-                        hookState = HookState.HookOnItsWay;
+                        animator.SetBool("GrapplingWithHook", true);
+
+                        //hookState = HookState.HookOnItsWay;
                     }
                 }
-               
+
             }
         }
 
 
 
-        if(hookState == HookState.Idle)
+        if (hookState == HookState.Idle)
         {
             return;
         }
-        else if(hookState == HookState.HookOnItsWay)
+        else if (hookState == HookState.HookOnItsWay)
         {
             Vector3 nextPos = Vector3.MoveTowards(hook.transform.position, targetHitPosition, Time.deltaTime * hookGoingSpeed);
 
@@ -82,58 +88,52 @@ public class GrapplingHook : MonoBehaviour
             if (distanceBetweenHookAndTarget <= hookGrabOffset)
             {
                 hookState = HookState.PullingPlayer;
-                
+
             }
         }
-        else if(hookState == HookState.PullingPlayer)
+        else if (hookState == HookState.PullingPlayer)
         {
-    
-            Vector3 nextPos = Vector3.MoveTowards(playerRb.position, targetHitPosition, Time.deltaTime * hookPullingSpeed);      
+
+            Vector3 nextPos = Vector3.MoveTowards(playerRb.position, targetHitPosition, Time.deltaTime * hookPullingSpeed);
             playerRb.MovePosition(nextPos);
             hookRenderer.SetPosition(0, hookHolster.position);
 
             float distanceBetweenPlayerAndTarget = Vector3.Distance(playerRb.position, targetHitPosition);
             if (distanceBetweenPlayerAndTarget <= releaseHookOffset)
             {
-                resetHook();
+
                 hookState = HookState.Idle;
+
+                animator.SetBool("GrapplingWithHook", false);
+       
+                resetHook();
+           
+
             }
         }
 
-           
-    }
-
-   /* private void LateUpdate()
-    {
-        if(hookState == HookState.Idle)
-        {
-            return;
-        }
-        else if(hookState == HookState.HookOnItsWay)
-        {
-            //Hook targete dogru gidecek
-            hookRenderer.SetPosition(0, hookHolster.position);
-            hookRenderer.SetPosition(1, hookCablePoint.position);
-            Debug.Log(hookCablePoint.position);
-            
-        }
-        else if(hookState == HookState.PullingPlayer)
-        {
-            //Player targete dogru gidecek
-            hookRenderer.SetPosition(0, hookHolster.position);
-        }
 
     }
-    */
 
 
     public void resetHook()
     {
+
+
         hookRenderer.enabled = false;
-        // hook.SetActive(false);
+      
+
         hook.transform.parent = hookHolster.transform;
-        hook.transform.position = hookHolster.position;
-        hook.transform.rotation = Quaternion.Euler(hookHolster.rotation.eulerAngles.x, hookHolster.rotation.eulerAngles.y, hookHolster.rotation.eulerAngles.z);
+        hook.transform.localPosition = hookLocalTransform.localPosition;
+        hook.transform.localRotation = Quaternion.Euler(hookLocalTransform.localEulerAngles.x, hookLocalTransform.localEulerAngles.y, hookLocalTransform.localEulerAngles.z);
+     
+
     }
+    public void setHookOnItsWay()
+    {
+        hook.transform.parent = null;
+        //hookState = HookState.HookOnItsWay;
+    }
+
 
 }

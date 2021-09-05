@@ -34,12 +34,12 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-       
-            movementX = Input.GetAxisRaw("Horizontal");
-            movementZ = Input.GetAxisRaw("Vertical");
-            movementVector = transform.right * movementX + transform.forward * movementZ; //oyuncunun yüzünün dönük olduğu yer fark etmesin diye hep aynı yönde hareket edecek
-            playerRb.MovePosition(playerRb.position + movementVector * currentSpeed * Time.deltaTime);
-        
+
+        movementX = Input.GetAxisRaw("Horizontal");
+        movementZ = Input.GetAxisRaw("Vertical");
+        movementVector = transform.right * movementX + transform.forward * movementZ; //oyuncunun yüzünün dönük olduğu yer fark etmesin diye hep aynı yönde hareket edecek
+        playerRb.MovePosition(playerRb.position + movementVector * currentSpeed * Time.deltaTime);
+
 
         if (Input.GetKey(KeyCode.LeftControl))
         {
@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
                 jump();
             }
         }
-     }
+    }
 
     private void crouch()
     {
@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void jump()
     {
-        Vector3 jumpVector = new Vector3(0f, jumpForce, 0f) + movementVector.normalized * jumpForce  ;
+        Vector3 jumpVector = new Vector3(0f, jumpForce, 0f) + movementVector.normalized * jumpForce;
         playerRb.AddForce(jumpVector);
         isGrounded = false;
     }
@@ -97,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
 
-        
+
         if (collision.gameObject.CompareTag("Ground"))
         {
             if (isGrounded)
@@ -131,4 +131,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Gizmos.DrawSphere(playerFeet.position, 0.1f);
     }*/
+    public void launchHookCall()
+    {
+        Camera.main.GetComponent<GrapplingHook>().setHookOnItsWay();
+    }
 }

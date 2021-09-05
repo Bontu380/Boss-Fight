@@ -67,10 +67,20 @@ public class GrenadeThrower : MonoBehaviour
          yield return new WaitForSeconds(1f);
          anim.SetBool("isThrowing", false);
      */
-      
-    
+
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+        float animationLength = 0f;
+        foreach (AnimationClip clip in clips)
+        {
+            if(clip.name == "throwGrenade")
+            {
+                animationLength = clip.length;
+                break;
+            }
+        }
+
         anim.SetTrigger("ThrowGrenade");
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(animationLength);
 
 
         Vector3 grenadeHoldingPoint = transform.position + transform.forward * grenadeSpawnRange;

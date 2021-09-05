@@ -127,10 +127,16 @@ public class Gun : MonoBehaviour
 
         isReloading = true;
         animator.SetBool("Reloading", true);
-        yield return new WaitForSeconds(reloadTime - 0.25f); //Transition between animations is default by 0.25 as I learned.
+
+       // yield return new WaitForSeconds(reloadTime - 0.25f); //Transition between animations is default by 0.25 as I learned.
+
+        yield return new WaitForSeconds(0.25f);
+
+
         currentBullet = clipCapacity;
         animator.SetBool("Reloading", false);
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.7f);
+
         bulletInfo.text = currentBullet.ToString();
         isReloading = false;
     }
