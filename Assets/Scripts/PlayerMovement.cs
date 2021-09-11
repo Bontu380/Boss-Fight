@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameCoordinator.instance.isPaused)
+        if (GameCoordinator.instance.isPaused || GameCoordinator.instance.playerMovingInputUnavailable)
         {
             return;
         }
@@ -37,8 +37,8 @@ public class PlayerMovement : MonoBehaviour
 
         movementX = Input.GetAxisRaw("Horizontal");
         movementZ = Input.GetAxisRaw("Vertical");
-        movementVector = transform.right * movementX + transform.forward * movementZ; //oyuncunun yüzünün dönük olduğu yer fark etmesin diye hep aynı yönde hareket edecek
-        playerRb.MovePosition(playerRb.position + movementVector * currentSpeed * Time.deltaTime);
+       // movementVector = transform.right * movementX + transform.forward * movementZ; //oyuncunun yüzünün dönük olduğu yer fark etmesin diye hep aynı yönde hareket edecek
+       // playerRb.MovePosition(playerRb.position + movementVector * currentSpeed * Time.deltaTime);
 
 
         if (Input.GetKey(KeyCode.LeftControl))
@@ -63,6 +63,17 @@ public class PlayerMovement : MonoBehaviour
                 jump();
             }
         }
+    }
+
+    void FixedUpdate()
+    {
+        if (!isGrounded || GameCoordinator.instance.isPaused || GameCoordinator.instance.playerMovingInputUnavailable )
+        {
+            return;
+        }
+
+        movementVector = transform.right * movementX + transform.forward * movementZ; //oyuncunun yüzünün dönük olduğu yer fark etmesin diye hep aynı yönde hareket edecek
+        playerRb.velocity = movementVector * currentSpeed * Time.fixedDeltaTime;
     }
 
     private void crouch()

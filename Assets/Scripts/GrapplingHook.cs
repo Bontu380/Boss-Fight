@@ -18,7 +18,9 @@ public class GrapplingHook : MonoBehaviour
 
     public LineRenderer hookRenderer;
     public LayerMask grappleAvailableLayer;
-    public Transform hookHolster;
+
+    private Vector3 localIdlePosition;
+    public Transform parent;
 
     public float hookDistance = 100f;
     public float releaseHookOffset = 5f;
@@ -29,15 +31,17 @@ public class GrapplingHook : MonoBehaviour
 
     public Rigidbody playerRb;
 
-    public Transform hookLocalTransform;
+    public Transform hookHoldingPointOnArm;
+
+    private Vector3 hookOriginalRotation, hookOriginalScale;
 
     void Start()
     {
         hookState = HookState.Idle;
         hookRenderer.enabled = false;
 
-        Debug.Log(hookLocalTransform.localPosition);
-        Debug.Log(hookLocalTransform.localEulerAngles);
+        hookOriginalRotation = hook.transform.rotation.eulerAngles;
+        hookOriginalScale = hook.transform.localScale;
     }
 
     void Update()
@@ -47,21 +51,17 @@ public class GrapplingHook : MonoBehaviour
             if (hookState == HookState.Idle)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, transform.forward, out hit, hookDistance))
-                {
-                    if (((1 << hit.transform.gameObject.layer) & grappleAvailableLayer) != 0)
+                if (Physics.Raycast(transform.position, transform.forward, out hit, hookDistance,grappleAvailableLayer))
+                {                   
                     {
                         targetHitPosition = hit.point;
-
-
-                        hook.transform.LookAt(hit.point);
-
-                        //hook.transform.parent = null;
+                        hook.SetActive(true);
                         hookRenderer.enabled = true;
-
+                        GameCoordinator.instance.playerMovingInputUnavailable = true;
+                        GameCoordinator.instance.playerShootingInputUnavailable = true;
+                        playerRb.velocity = Vector3.zero;
                         animator.SetBool("GrapplingWithHook", true);
 
-                        //hookState = HookState.HookOnItsWay;
                     }
                 }
 
@@ -79,7 +79,7 @@ public class GrapplingHook : MonoBehaviour
             Vector3 nextPos = Vector3.MoveTowards(hook.transform.position, targetHitPosition, Time.deltaTime * hookGoingSpeed);
 
             hook.transform.position = nextPos;
-            hookRenderer.SetPosition(0, hookHolster.position);
+            hookRenderer.SetPosition(0, parent.position);
             hookRenderer.SetPosition(1, hookCablePoint.position);
 
             //float distanceBetweenHookAndTarget = Vector3.Distance(hookCollisionPoint.position, targetHitPosition);
@@ -96,7 +96,7 @@ public class GrapplingHook : MonoBehaviour
 
             Vector3 nextPos = Vector3.MoveTowards(playerRb.position, targetHitPosition, Time.deltaTime * hookPullingSpeed);
             playerRb.MovePosition(nextPos);
-            hookRenderer.SetPosition(0, hookHolster.position);
+            hookRenderer.SetPosition(0, parent.position);
 
             float distanceBetweenPlayerAndTarget = Vector3.Distance(playerRb.position, targetHitPosition);
             if (distanceBetweenPlayerAndTarget <= releaseHookOffset)
@@ -118,21 +118,32 @@ public class GrapplingHook : MonoBehaviour
 
     public void resetHook()
     {
-
+        GameCoordinator.instance.playerMovingInputUnavailable = false;
+        GameCoordinator.instance.playerShootingInputUnavailable = false;
 
         hookRenderer.enabled = false;
-      
+        hook.SetActive(false);
 
-        hook.transform.parent = hookHolster.transform;
-        hook.transform.localPosition = hookLocalTransform.localPosition;
-        hook.transform.localRotation = Quaternion.Euler(hookLocalTransform.localEulerAngles.x, hookLocalTransform.localEulerAngles.y, hookLocalTransform.localEulerAngles.z);
+        hook.transform.position = hookHoldingPointOnArm.position ;
+        hook.transform.parent = parent;
+
+        //hook.transform = hookOriginalTransform;
+
+        
+        hook.transform.localScale = hookOriginalScale;
+        hook.transform.localEulerAngles = hookOriginalRotation;
+        //hook.transform.localRotation = Quaternion.Euler(hookOriginalRotation.x, hookOriginalRotation.y, hookOriginalRotation.z);
+       
+
+       // hook.transform.localRotation = Quaternion.Euler(hookLocalTransform.localEulerAngles.x, hookLocalTransform.localEulerAngles.y, hookLocalTransform.localEulerAngles.z);
      
 
     }
     public void setHookOnItsWay()
     {
+        hook.transform.LookAt(targetHitPosition);
         hook.transform.parent = null;
-        //hookState = HookState.HookOnItsWay;
+        hookState = HookState.HookOnItsWay;
     }
 
 

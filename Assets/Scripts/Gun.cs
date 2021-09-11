@@ -33,7 +33,7 @@ public class Gun : MonoBehaviour
     void Update()
     {
 
-        if (isReloading || GameCoordinator.instance.isPaused )
+        if (isReloading || GameCoordinator.instance.isPaused || GameCoordinator.instance.playerMovingInputUnavailable )
         {
             return;
         }

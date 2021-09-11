@@ -8,21 +8,23 @@ public class GameCoordinator : MonoBehaviour
 {
     public static GameCoordinator instance;
 
-    public Text enemyChaseT ;
+    public Text enemyChaseT;
     public Text playerSafeT;
     public GameObject pauseMenu;
     public GameObject deathScreen;
     public bool isPaused = false;
+    public bool playerShootingInputUnavailable = false;
 
-   
+    public bool playerMovingInputUnavailable = false;
+
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
-        else if(instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -35,7 +37,7 @@ public class GameCoordinator : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) 
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
             {
@@ -47,7 +49,7 @@ public class GameCoordinator : MonoBehaviour
                 pauseGame();
             }
         }
-       
+
     }
 
     public void playerIsBeingChased()
@@ -59,10 +61,10 @@ public class GameCoordinator : MonoBehaviour
     public void playerIsSafe()
     {
         enemyChaseT.enabled = false;
-        playerSafeT.enabled = true; 
+        playerSafeT.enabled = true;
     }
 
-   public void pauseGame()
+    public void pauseGame()
     {
         isPaused = true;
         Cursor.lockState = CursorLockMode.None;
@@ -83,10 +85,10 @@ public class GameCoordinator : MonoBehaviour
 
     public void restartLevel()
     {
-      
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         resumeGame();
-    
+
     }
 
     public void quitGame()
