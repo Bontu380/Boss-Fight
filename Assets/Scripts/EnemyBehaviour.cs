@@ -23,13 +23,13 @@ public class EnemyBehaviour : MonoBehaviour
     public float meleeAttackCooldown = 4f;
 
     public Transform attackPoint;
-    public LayerMask playerLayer;
+    public LayerMask layers;
     public float meleeAttackColliderRadius = 3f;
 
 
     [SerializeField]
     private float playerLosingTimeCounter = 0f;
-    public Transform playerPos;
+    public Rigidbody playerRb;
     public bool playerOnSight = false;
     public bool bothArmsDestroyed = false;
     public bool movingToPlayer = false;
@@ -41,8 +41,8 @@ public class EnemyBehaviour : MonoBehaviour
     private NavMeshAgent agent;
     private Animator bossAnimator;
     private Vector3 playerLastSeenPos;
-    
-    
+
+
 
 
     void Start()
@@ -51,10 +51,15 @@ public class EnemyBehaviour : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         bossAnimator = GetComponent<Animator>();
         normalEyeColor = eyes[0].GetComponent<Renderer>().material.color;
-        rocketTimeCounter = rocketCooldown-1f;
-       
+        rocketTimeCounter = rocketCooldown - 1f;
+
     }
 
+    //void Update()
+    //{
+    //    lookAtPlayer();
+    //    //transform.LookAt(playerRb.position);
+    //}
 
     void Update()
     {
@@ -78,7 +83,7 @@ public class EnemyBehaviour : MonoBehaviour
             if (playerOnSight)
             {
                 lookAtPlayer();
-                float distanceBetweenPlayer = Vector3.Distance(transform.position, playerPos.position);
+                float distanceBetweenPlayer = Vector3.Distance(transform.position, playerRb.position);
                 if (distanceBetweenPlayer >= minRocketLaunchRange)
                 {
                     enemyRb.velocity = Vector3.zero;
@@ -97,11 +102,11 @@ public class EnemyBehaviour : MonoBehaviour
         }
         else
         {
-            float distanceBetweenPlayer = Vector3.Distance(transform.position, playerPos.position);
-            if (distanceBetweenPlayer >= meleeRange && !movingToPlayer)
+            float distanceBetweenPlayer = Vector3.Distance(transform.position, playerRb.position);
+            if (distanceBetweenPlayer > meleeRange && !movingToPlayer)
             {
                 agent.isStopped = false; //Bunu 
-                agent.SetDestination(playerPos.position);
+                agent.SetDestination(playerRb.position);
                 movingToPlayer = true;
             }
             else
@@ -113,25 +118,55 @@ public class EnemyBehaviour : MonoBehaviour
                     lookAtPlayer();
                     bossAnimator.SetTrigger("SmashAttack");
                     //meleeAttack();
-                    
+
                 }
-           
+
             }
         }
     }
 
+    public void lookAtPlayer()
+    {
+        Vector3 direction = playerRb.position - transform.position;
+        Quaternion lookToRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Lerp(transform.rotation, lookToRotation, rotateSpeed * Time.deltaTime);
+
+    }
+    public void meleeAttack()
+    {
+        Debug.Log("Called meleeAttack");
+
+        Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, layers);
+
+        foreach (Collider player in hit)
+        {
+            PlayerStats script = player.GetComponent<PlayerStats>();
+            if (script != null)
+            {
+
+                script.takeDamage(smashDamage);
+            }
+            /*Rigidbody objectRb = player.GetComponent<Rigidbody>();
+            if (objectRb != null)
+            {
+                objectRb.AddExplosionForce(meleeKnockbackForce, attackPoint.transform.position, meleeAttackColliderRadius,100f,ForceMode.VelocityChange);
+            }*/
+
+        }
+        meleeAttackTimeCounter = 0f;
+    }
 
 
     public void checkIsPlayerOnSight()
     {
         //If player is in the angle of the sight of the enemy.
-        float currentAngle = Vector3.Angle(playerPos.position - transform.position, transform.forward);
+        float currentAngle = Vector3.Angle(playerRb.position - transform.position, transform.forward);
         if (currentAngle <= enemySightAngle)
         {
             //If there is anything between enemy and player like a wall or something so i cast a ray and check if that hits player except than a wall or something.
             //Also check if player is in the enemy sight range.
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, playerPos.transform.position - transform.position, out hit, enemySightRange))
+            if (Physics.Raycast(transform.position, playerRb.transform.position - transform.position, out hit, enemySightRange))
             {
                 if (hit.collider.CompareTag("Player"))
                 {
@@ -140,7 +175,6 @@ public class EnemyBehaviour : MonoBehaviour
             }
         }
     }
-
     public void checkIsPlayerLost()
     {
         //Player can be lost in two ways. In both ways, time must be passed for enemy to return normal.
@@ -154,14 +188,14 @@ public class EnemyBehaviour : MonoBehaviour
         if (playerLosingTimeCounter >= enemyReturningNormalTime)
         {
             //Calculating angle between enemy and player.
-            float currentAngle = Vector3.Angle(playerPos.position, transform.forward);
+            float currentAngle = Vector3.Angle(playerRb.position, transform.forward);
 
             if (currentAngle > enemySightAngle)
             {
                 //Check the distance, also if player is hid behind some walls or something.
                 playerLost();
             }
-            if (Physics.Raycast(transform.position, playerPos.position - transform.position, out hit, enemySightRange))
+            if (Physics.Raycast(transform.position, playerRb.position - transform.position, out hit, enemySightRange))
             {
                 if (!hit.collider.CompareTag("Player"))
                 {
@@ -171,17 +205,16 @@ public class EnemyBehaviour : MonoBehaviour
         }
 
     }
-
     public void playerSeen()
     {
         playerOnSight = true;
-        playerLastSeenPos = playerPos.position;
-    
-            
+        playerLastSeenPos = playerRb.position;
 
-        
+
+
+
         playerLosingTimeCounter = 0f; //Saw the player so cooldown counter resets.
-        
+
         //Turning the eye color to red.
         for (int i = 0; i < eyes.Length; i++)
         {
@@ -209,111 +242,48 @@ public class EnemyBehaviour : MonoBehaviour
         agent.isStopped = false;
         agent.SetDestination(playerLastSeenPos);
     }
-    
-    public void lookAtPlayer()
-    {
-        Vector3 direction = playerPos.position - transform.position;
-        Quaternion lookToRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, lookToRotation, rotateSpeed * Time.deltaTime);
-     
-    }
-
     public IEnumerator fireRockets()
     {
 
-         if (bothArmsDestroyed)
-         {
+        if (bothArmsDestroyed)
+        {
             yield break;
-         }
+        }
 
         if (!bossAnimator.GetCurrentAnimatorStateInfo(0).IsName("RocketLauncherSetUp"))
         {
             bossAnimator.SetBool("deployLaunchers", true);
             yield return new WaitForSeconds(bossAnimator.GetCurrentAnimatorStateInfo(0).length + bossAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime + 0.25f);
         }
-           
+
 
         int i = 0;
         foreach (EnemyArm arm in arms)
         {
-           if (arm != null)
-           {
-              arm.fireRocket(playerPos);
-              yield return new WaitForSeconds(timeBetweenRockets);                     
-           }
-           else
-           {
-              i++;
-              if (i == arms.Length)
-              {
-                 bothArmsDestroyed = true;
-                 bossAnimator.SetBool("deployLaunchers", false);
+            if (arm != null)
+            {
+                arm.fireRocket(playerRb.position);
+                yield return new WaitForSeconds(timeBetweenRockets);
+            }
+            else
+            {
+                i++;
+                if (i == arms.Length)
+                {
+                    bothArmsDestroyed = true;
+                    bossAnimator.SetBool("deployLaunchers", false);
                     //bossAnimator.SetBool("pullSword", true);
-                 bossAnimator.SetTrigger("SwordTrigger");
+                    bossAnimator.SetTrigger("SwordTrigger");
                 }
-           }
-
-        }         
-    }
-
-    public void meleeAttack()
-    {
-        Debug.Log("Called meleeAttack");
-       
-        Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, playerLayer);
-
-        foreach (Collider player in hit)
-        {
-            PlayerStats script = player.GetComponent<PlayerStats>();
-            if (script != null)
-            {
-
-                script.takeDamage(smashDamage);
             }
 
-
-            /*Rigidbody objectRb = player.GetComponent<Rigidbody>();
-            if (objectRb != null)
-            {
-                objectRb.AddExplosionForce(meleeKnockbackForce, attackPoint.transform.position, meleeAttackColliderRadius,100f,ForceMode.VelocityChange);
-            }*/
-
         }
-
-        meleeAttackTimeCounter = 0f;
-     
-
     }
-    
-/*
-    public IEnumerator meleeAttack()
-    {
-        lookAtPlayer();
-        bossAnimator.SetTrigger("SmashAttack");
-        yield return new WaitForSeconds(0.15f);
-
-        Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, playerLayer);
-
-        foreach (Collider player in hit)
-        {
-            Debug.Log(player.transform.name);
-            PlayerStats script = player.GetComponent<PlayerStats>();
-            if (script != null)
-            {
-
-                script.takeDamage(smashDamage);
-            }
-        }
-
-        meleeAttackTimeCounter = 0f;
-    }
-    */
-
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
 
-        Gizmos.DrawWireSphere(attackPoint.position,meleeAttackColliderRadius);
+        Gizmos.DrawWireSphere(attackPoint.position, meleeAttackColliderRadius);
     }
 
 

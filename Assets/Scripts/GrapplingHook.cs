@@ -8,6 +8,7 @@ public class GrapplingHook : MonoBehaviour
 
     public Animator animator;
 
+    [SerializeField]
     private HookState hookState;
     private Vector3 targetHitPosition;
 
@@ -21,6 +22,10 @@ public class GrapplingHook : MonoBehaviour
 
     private Vector3 localIdlePosition;
     public Transform parent;
+
+    public float hookCooldown = 3f;
+
+    private float hookTimeCounter;
 
     public float hookDistance = 100f;
     public float releaseHookOffset = 5f;
@@ -40,15 +45,18 @@ public class GrapplingHook : MonoBehaviour
         hookState = HookState.Idle;
         hookRenderer.enabled = false;
 
+        hookTimeCounter = hookCooldown;
+
         hookOriginalRotation = hook.transform.rotation.eulerAngles;
         hookOriginalScale = hook.transform.localScale;
     }
 
     void Update()
     {
+        hookTimeCounter += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (hookState == HookState.Idle)
+            if (hookState == HookState.Idle && hookTimeCounter >= hookCooldown)
             {
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, transform.forward, out hit, hookDistance,grappleAvailableLayer))
@@ -59,6 +67,7 @@ public class GrapplingHook : MonoBehaviour
                         hookRenderer.enabled = true;
                         GameCoordinator.instance.playerMovingInputUnavailable = true;
                         GameCoordinator.instance.playerShootingInputUnavailable = true;
+                        playerRb.useGravity = false;
                         playerRb.velocity = Vector3.zero;
                         animator.SetBool("GrapplingWithHook", true);
 
@@ -102,9 +111,9 @@ public class GrapplingHook : MonoBehaviour
             if (distanceBetweenPlayerAndTarget <= releaseHookOffset)
             {
 
-                hookState = HookState.Idle;
-
-                animator.SetBool("GrapplingWithHook", false);
+      
+               // playerRb.useGravity = true;
+               // animator.SetBool("GrapplingWithHook", false);
        
                 resetHook();
            
@@ -120,6 +129,8 @@ public class GrapplingHook : MonoBehaviour
     {
         GameCoordinator.instance.playerMovingInputUnavailable = false;
         GameCoordinator.instance.playerShootingInputUnavailable = false;
+        playerRb.useGravity = true;
+        animator.SetBool("GrapplingWithHook", false);
 
         hookRenderer.enabled = false;
         hook.SetActive(false);
@@ -132,11 +143,13 @@ public class GrapplingHook : MonoBehaviour
         
         hook.transform.localScale = hookOriginalScale;
         hook.transform.localEulerAngles = hookOriginalRotation;
+        hookState = HookState.Idle;
+        hookTimeCounter = 0f;
         //hook.transform.localRotation = Quaternion.Euler(hookOriginalRotation.x, hookOriginalRotation.y, hookOriginalRotation.z);
-       
 
-       // hook.transform.localRotation = Quaternion.Euler(hookLocalTransform.localEulerAngles.x, hookLocalTransform.localEulerAngles.y, hookLocalTransform.localEulerAngles.z);
-     
+
+        // hook.transform.localRotation = Quaternion.Euler(hookLocalTransform.localEulerAngles.x, hookLocalTransform.localEulerAngles.y, hookLocalTransform.localEulerAngles.z);
+
 
     }
     public void setHookOnItsWay()

@@ -42,7 +42,7 @@ public class EnemyArm : MonoBehaviour
 
     }
 
-    public void fireRocket(Transform target)
+    public void fireRocket(Vector3 target)
     {
         /*  
         GameObject rocket =  Instantiate(rocketPrefab, firePoint.transform.position, firePoint.transform.rotation);
@@ -54,10 +54,10 @@ public class EnemyArm : MonoBehaviour
           */
 
         
-        Vector3 direction = target.position - firePoint.position;
+        Vector3 direction = target - firePoint.position;
 
         GameObject rocket = Instantiate(rocketPrefab, firePoint.transform.position, Quaternion.identity);
-        rocket.transform.LookAt(target.position);
+        rocket.transform.LookAt(target);
         
 
         /*Quaternion lookRotation = Quaternion.LookRotation(rocket.transform.position, target.position);
