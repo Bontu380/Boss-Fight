@@ -42,6 +42,7 @@ public class EnemyBehaviour : MonoBehaviour
     private Animator bossAnimator;
     private Vector3 playerLastSeenPos;
 
+    private bool inAnimation = false;
 
 
 
@@ -111,11 +112,12 @@ public class EnemyBehaviour : MonoBehaviour
             }
             else
             {
-                if (meleeAttackTimeCounter >= meleeAttackCooldown)
+                if (meleeAttackTimeCounter >= meleeAttackCooldown) //VE ARALARINDAKI ACI BELIRLI BR DERECEDEN KUCUKSE
                 {
                     movingToPlayer = false;
                     agent.isStopped = true;
                     lookAtPlayer();
+                    inAnimation = true;
                     bossAnimator.SetTrigger("SmashAttack");
                     //meleeAttack();
 
@@ -127,14 +129,17 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void lookAtPlayer()
     {
+        //EĞER SMASH ATTACK VS ATIYORSA BU METOD DURACAK
+        if (inAnimation) return;
+
         Vector3 direction = playerRb.position - transform.position;
         Quaternion lookToRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Lerp(transform.rotation, lookToRotation, rotateSpeed * Time.deltaTime);
 
     }
-    public void meleeAttack()
+    public void smashAttack()
     {
-        Debug.Log("Called meleeAttack");
+        Debug.Log("Called smashAttack");
 
         Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, layers);
 
@@ -153,7 +158,10 @@ public class EnemyBehaviour : MonoBehaviour
             }*/
 
         }
+     
+        bossAnimator.ResetTrigger("SmashAttack");
         meleeAttackTimeCounter = 0f;
+        inAnimation = false;
     }
 
 

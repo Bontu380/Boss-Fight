@@ -3284,7 +3284,7 @@ MonoBehaviour:
   meleeRange: 8.5
   smashDamage: 50
   meleeAttackTimeCounter: 0
-  meleeAttackCooldown: 2
+  meleeAttackCooldown: 5
   attackPoint: {fileID: 1633133131}
   layers:
     serializedVersion: 2
