@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GrapplingHook : MonoBehaviour
 {
@@ -40,12 +41,16 @@ public class GrapplingHook : MonoBehaviour
 
     private Vector3 hookOriginalRotation, hookOriginalScale;
 
+    public Image hookCooldownImage;
+
     void Start()
     {
         hookState = HookState.Idle;
         hookRenderer.enabled = false;
 
         hookTimeCounter = hookCooldown;
+
+        hookCooldownImage.fillAmount = hookTimeCounter / hookCooldown;
 
         hookOriginalRotation = hook.transform.rotation.eulerAngles;
         hookOriginalScale = hook.transform.localScale;
@@ -54,6 +59,7 @@ public class GrapplingHook : MonoBehaviour
     void Update()
     {
         hookTimeCounter += Time.deltaTime;
+        hookCooldownImage.fillAmount = hookTimeCounter / hookCooldown;
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (hookState == HookState.Idle && hookTimeCounter >= hookCooldown)
