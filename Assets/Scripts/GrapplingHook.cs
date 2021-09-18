@@ -70,6 +70,8 @@ public class GrapplingHook : MonoBehaviour
                     {
                         targetHitPosition = hit.point;
                         hook.SetActive(true);
+                        hookRenderer.SetPosition(0, parent.position);
+                        hookRenderer.SetPosition(1, hookCablePoint.position);
                         hookRenderer.enabled = true;
                         GameCoordinator.instance.playerMovingInputUnavailable = true;
                         GameCoordinator.instance.playerShootingInputUnavailable = true;
@@ -146,7 +148,7 @@ public class GrapplingHook : MonoBehaviour
 
         //hook.transform = hookOriginalTransform;
 
-        
+        hookRenderer.enabled = false;
         hook.transform.localScale = hookOriginalScale;
         hook.transform.localEulerAngles = hookOriginalRotation;
         hookState = HookState.Idle;
