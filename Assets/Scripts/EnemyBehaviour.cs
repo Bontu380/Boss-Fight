@@ -44,6 +44,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private bool inAnimation = false;
 
+    public GameObject smashAttackParticlePrefab;
 
 
     void Start()
@@ -56,16 +57,10 @@ public class EnemyBehaviour : MonoBehaviour
 
     }
 
-    //void Update()
-    //{
-    //    lookAtPlayer();
-    //    //transform.LookAt(playerRb.position);
-    //}
-
     void Update()
     {
 
-        if (GameCoordinator.instance.isPaused)
+        if (GameCoordinator.instance.isPaused || inAnimation)
         {
             return;
         }
@@ -95,6 +90,7 @@ public class EnemyBehaviour : MonoBehaviour
                         StartCoroutine(fireRockets());
                         rocketTimeCounter = 0f;
                         agent.isStopped = false;
+
                     }
                 }
                 checkIsPlayerLost();
@@ -110,16 +106,22 @@ public class EnemyBehaviour : MonoBehaviour
                 agent.SetDestination(playerRb.position);
                 movingToPlayer = true;
             }
+            //else if (!movingToPlayer)
             else
             {
-                if (meleeAttackTimeCounter >= meleeAttackCooldown) //VE ARALARINDAKI ACI BELIRLI BR DERECEDEN KUCUKSE
+                agent.SetDestination(playerRb.position);
+                movingToPlayer = true;
+                if (meleeAttackTimeCounter >= meleeAttackCooldown && distanceBetweenPlayer <= meleeRange) //VE ARALARINDAKI ACI BELIRLI BR DERECEDEN KUCUKSE
                 {
                     movingToPlayer = false;
                     agent.isStopped = true;
+                    agent.enabled = false;
                     lookAtPlayer();
-                    inAnimation = true;
-                    bossAnimator.SetTrigger("SmashAttack");
-                    //meleeAttack();
+                    if (!bossAnimator.GetBool("SmashAttack"))
+                    {
+                        inAnimation = true;
+                        bossAnimator.SetTrigger("SmashAttack");
+                    }
 
                 }
 
@@ -129,7 +131,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void lookAtPlayer()
     {
-        //EĞER SMASH ATTACK VS ATIYORSA BU METOD DURACAK
+
         if (inAnimation) return;
 
         Vector3 direction = playerRb.position - transform.position;
@@ -139,31 +141,49 @@ public class EnemyBehaviour : MonoBehaviour
     }
     public void smashAttack()
     {
-        Debug.Log("Called smashAttack");
+
+        Color groundColor = Color.white;
 
         Collider[] hit = Physics.OverlapSphere(attackPoint.position, meleeAttackColliderRadius, layers);
 
-        foreach (Collider player in hit)
+        foreach (Collider col in hit)
         {
-            PlayerStats script = player.GetComponent<PlayerStats>();
-            if (script != null)
+            if (col.transform.CompareTag("Ground"))
             {
-
-                script.takeDamage(smashDamage);
+                groundColor = col.GetComponent<MeshRenderer>().material.color; //<Renderer> also works because of inheritance
             }
-            /*Rigidbody objectRb = player.GetComponent<Rigidbody>();
-            if (objectRb != null)
+            else
             {
-                objectRb.AddExplosionForce(meleeKnockbackForce, attackPoint.transform.position, meleeAttackColliderRadius,100f,ForceMode.VelocityChange);
-            }*/
+                PlayerStats script = col.GetComponent<PlayerStats>();
+                if (script != null)
+                {
+
+                    script.takeDamage(smashDamage);
+                }
+            }
+
+
 
         }
-     
+        GameObject smashAttackParticle = Instantiate(smashAttackParticlePrefab, attackPoint.position, Quaternion.Euler(-90f, 0f, 0f));
+        smashAttackParticle.GetComponent<ParticleSystem>().startColor = groundColor;
+        Destroy(smashAttackParticle, 2f);
         bossAnimator.ResetTrigger("SmashAttack");
         meleeAttackTimeCounter = 0f;
-        inAnimation = false;
+
     }
 
+    public void disableMovement()
+    {
+        inAnimation = true;
+        agent.enabled = false;
+    }
+
+    public void enableMovement()
+    {
+        inAnimation = false;
+        agent.enabled = true;
+    }
 
     public void checkIsPlayerOnSight()
     {
@@ -280,7 +300,7 @@ public class EnemyBehaviour : MonoBehaviour
                 {
                     bothArmsDestroyed = true;
                     bossAnimator.SetBool("deployLaunchers", false);
-                    //bossAnimator.SetBool("pullSword", true);
+
                     bossAnimator.SetTrigger("SwordTrigger");
                 }
             }

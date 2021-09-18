@@ -3303,6 +3303,8 @@ MonoBehaviour:
   arms:
   - {fileID: 1076236502}
   - {fileID: 488419615}
+  smashAttackParticlePrefab: {fileID: 6861681791148116824, guid: f7d3acd41304ce74da34228d413e8759,
+    type: 3}
 --- !u!114 &956646489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3452,7 +3454,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 5d4c92ef39a0308438ec61c33486087d, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
