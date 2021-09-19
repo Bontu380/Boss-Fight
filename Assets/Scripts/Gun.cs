@@ -50,17 +50,23 @@ public class Gun : MonoBehaviour
         {
             if (currentBullet != clipCapacity)
             {
+                animator.SetBool("isFiring", false);
                 StartCoroutine(reload());
                 return;
             }
         }
 
-        if (nextBulletTimeCounter >= fireRateRatio)
+        if (Input.GetMouseButton(0))
         {
-            if (Input.GetMouseButton(0))
+            if (nextBulletTimeCounter >= fireRateRatio)
             {
+                animator.SetBool("isFiring", true);
                 fire();
             }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            animator.SetBool("isFiring", false);
         }
 
         nextBulletTimeCounter += Time.deltaTime;
@@ -69,8 +75,10 @@ public class Gun : MonoBehaviour
 
     private void fire()
     {
-        if (currentBullet == 0)
+        if (currentBullet <= 0)
         {
+            animator.SetBool("isFiring", false);
+            Debug.Log("Out of bullets");
             StartCoroutine(reload());
 
         }
@@ -124,21 +132,39 @@ public class Gun : MonoBehaviour
 
     private IEnumerator reload()
     {
-
+        Debug.Log("In coroutine");
         isReloading = true;
+        animator.SetBool("isFiring", false);
         animator.SetBool("Reloading", true);
+        //Debug.Log(animator.GetBool("Reloading"));
 
-       // yield return new WaitForSeconds(reloadTime - 0.25f); //Transition between animations is default by 0.25 as I learned.
+        float animationLength = 0f;
+        AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
 
-        yield return new WaitForSeconds(0.25f);
+        foreach (AnimationClip clip in clips)
+        {
+            if(clip.name == "WeaponReloading")
+            {
+                animationLength = clip.length;
+                break;
+            }
+        }
+
+        yield return new WaitForSeconds(animationLength);
 
 
         currentBullet = clipCapacity;
         animator.SetBool("Reloading", false);
-        yield return new WaitForSeconds(0.7f);
+       // animator.SetBool("isFiring", false);
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+        {
+            yield return null;
+        }
 
         bulletInfo.text = currentBullet.ToString();
         isReloading = false;
+
+
     }
 }
 
