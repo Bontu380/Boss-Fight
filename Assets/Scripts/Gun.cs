@@ -22,7 +22,15 @@ public class Gun : MonoBehaviour
     public int currentBullet;
     private float nextBulletTimeCounter = 0f;
 
+    public float currentRecoilX = 0f;
+    public float currentRecoilY = 0f;
+    public float zOffsetFromFirePoint = 3f;
 
+    public float recoilRate = 0.5f;
+    public float recoilLimit = 3f;
+    public float recoilCooldownRate = 0.3f;
+
+    public Transform test;
     private void Start()
     {
         nextBulletTimeCounter = fireRateRatio;
@@ -33,12 +41,12 @@ public class Gun : MonoBehaviour
     void Update()
     {
 
-        if (isReloading || GameCoordinator.instance.isPaused || GameCoordinator.instance.playerMovingInputUnavailable )
+        if (isReloading || GameCoordinator.instance.isPaused || GameCoordinator.instance.playerMovingInputUnavailable)
         {
             return;
         }
 
-      
+
 
         if (currentBullet <= 0)
         {
@@ -88,10 +96,43 @@ public class Gun : MonoBehaviour
             nextBulletTimeCounter = 0f;
             decreaseBullet();
 
+            currentRecoilX = Random.Range(-currentRecoilX-recoilRate , currentRecoilX + recoilRate);
+            if (currentRecoilX > recoilLimit)
+            {
+                currentRecoilX = recoilLimit;
+            }
+            else if (currentRecoilX < -recoilLimit)
+            {
+                currentRecoilX = -recoilLimit;
+            }
+
+
+            currentRecoilY = Random.Range(-currentRecoilY-recoilRate , currentRecoilY + recoilRate);
+            if (currentRecoilY > recoilLimit)
+            {
+                currentRecoilY = recoilLimit;
+            }
+            else if (currentRecoilY < -recoilLimit)
+            {
+                currentRecoilY = -recoilLimit;
+            }
+
+
+           
+
+
+            Vector3 targetPoint = (playerCamera.transform.forward * zOffsetFromFirePoint +
+                                 playerCamera.transform.right *  currentRecoilX +
+                                 playerCamera.transform.up *  currentRecoilY) + playerCamera.transform.position;
+
+            Vector3 direction = (targetPoint - playerCamera.transform.position);
+
+            test.transform.position = targetPoint;
 
             RaycastHit hit;
-            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit))
+            if (Physics.Raycast(playerCamera.transform.position, direction, out hit))
             {
+               
                 if (hit.transform.CompareTag("Enemy"))
                 {
                     Enemy enemyScript = hit.transform.GetComponent<Enemy>();
@@ -101,7 +142,7 @@ public class Gun : MonoBehaviour
                     }
                 }
 
-                if (hit.transform.CompareTag("Arm"))
+                else if (hit.transform.CompareTag("Arm"))
                 {
                     EnemyArm arm = hit.transform.GetComponent<EnemyArm>();
                     if (arm != null)
@@ -110,7 +151,7 @@ public class Gun : MonoBehaviour
                     }
                 }
 
-                if (hit.transform.CompareTag("Rocket"))
+                else if (hit.transform.CompareTag("Rocket"))
                 {
                     Rocket rocket = hit.transform.GetComponent<Rocket>();
                     rocket.explode(hit.transform);
@@ -132,18 +173,16 @@ public class Gun : MonoBehaviour
 
     private IEnumerator reload()
     {
-        Debug.Log("In coroutine");
         isReloading = true;
         animator.SetBool("isFiring", false);
         animator.SetBool("Reloading", true);
-        //Debug.Log(animator.GetBool("Reloading"));
 
         float animationLength = 0f;
         AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
 
         foreach (AnimationClip clip in clips)
         {
-            if(clip.name == "WeaponReloading")
+            if (clip.name == "WeaponReloading")
             {
                 animationLength = clip.length;
                 break;
@@ -155,7 +194,6 @@ public class Gun : MonoBehaviour
 
         currentBullet = clipCapacity;
         animator.SetBool("Reloading", false);
-       // animator.SetBool("isFiring", false);
         while (!animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
             yield return null;

@@ -109,6 +109,7 @@ public class EnemyBehaviour : MonoBehaviour
             //else if (!movingToPlayer)
             else
             {
+                agent.enabled = true;
                 agent.SetDestination(playerRb.position);
                 movingToPlayer = true;
                 if (meleeAttackTimeCounter >= meleeAttackCooldown && distanceBetweenPlayer <= meleeRange) //VE ARALARINDAKI ACI BELIRLI BR DERECEDEN KUCUKSE
