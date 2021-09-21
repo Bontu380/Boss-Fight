@@ -103,6 +103,7 @@ public class Gun : MonoBehaviour
             nextBulletTimeCounter = 0f;
             decreaseBullet();
 
+
             currentRecoilX = Random.Range(-currentRecoilX - recoilRate, currentRecoilX + recoilRate);
             if (currentRecoilX > recoilLimit)
             {
