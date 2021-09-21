@@ -219,8 +219,8 @@ MonoBehaviour:
   currentRecoilX: 0
   currentRecoilY: 0
   zOffsetFromFirePoint: 5
-  recoilRate: 0.12
-  recoilLimit: 0.5
+  recoilRate: 0.18
+  recoilLimit: 1
   recoilCooldownRate: 0.3
   test: {fileID: 1625489151}
 --- !u!1 &157550473
