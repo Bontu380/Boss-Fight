@@ -77,6 +77,13 @@ public class Gun : MonoBehaviour
             animator.SetBool("isFiring", false);
         }
 
+        if (!animator.GetBool("isFiring"))
+        {
+
+           currentRecoilX = Mathf.MoveTowards(currentRecoilX, 0f, recoilCooldownRate * Time.deltaTime);
+           currentRecoilY = Mathf.MoveTowards(currentRecoilY, 0f, recoilCooldownRate * Time.deltaTime);
+        }
+
         nextBulletTimeCounter += Time.deltaTime;
 
     }
@@ -96,7 +103,7 @@ public class Gun : MonoBehaviour
             nextBulletTimeCounter = 0f;
             decreaseBullet();
 
-            currentRecoilX = Random.Range(-currentRecoilX-recoilRate , currentRecoilX + recoilRate);
+            currentRecoilX = Random.Range(-currentRecoilX - recoilRate, currentRecoilX + recoilRate);
             if (currentRecoilX > recoilLimit)
             {
                 currentRecoilX = recoilLimit;
@@ -107,7 +114,7 @@ public class Gun : MonoBehaviour
             }
 
 
-            currentRecoilY = Random.Range(-currentRecoilY-recoilRate , currentRecoilY + recoilRate);
+            currentRecoilY = Random.Range(-currentRecoilY - recoilRate, currentRecoilY + recoilRate);
             if (currentRecoilY > recoilLimit)
             {
                 currentRecoilY = recoilLimit;
@@ -118,7 +125,42 @@ public class Gun : MonoBehaviour
             }
 
 
-           
+
+            //currentRecoilX *= -1f;
+            //if(currentRecoilX <= 0f)
+            //{
+            //    currentRecoilX += recoilLimit;
+            //    if (currentRecoilX > recoilLimit)
+            //    {
+            //        currentRecoilX = recoilLimit;
+            //    }
+            //}
+            //else
+            //{
+            //    currentRecoilX -= recoilLimit;
+            //    if (currentRecoilX < -recoilLimit)
+            //    {
+            //        currentRecoilX = -recoilLimit;
+            //    }
+            //}
+
+            //currentRecoilY *= -1f;
+            //if (currentRecoilY <= 0f)
+            //{
+            //    currentRecoilY += recoilLimit;
+            //    if (currentRecoilY > recoilLimit)
+            //    {
+            //        currentRecoilY = recoilLimit;
+            //    }
+            //}
+            //else
+            //{
+            //    currentRecoilY -= recoilLimit;
+            //    if (currentRecoilY < -recoilLimit)
+            //    {
+            //        currentRecoilY = -recoilLimit;
+            //    }
+            //}
 
 
             Vector3 targetPoint = (playerCamera.transform.forward * zOffsetFromFirePoint +
