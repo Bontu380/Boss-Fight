@@ -322,6 +322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 177311951}
+  - component: {fileID: 177311952}
   m_Layer: 0
   m_Name: WeaponHolder
   m_TagString: Untagged
@@ -343,8 +344,21 @@ Transform:
   - {fileID: 887634037}
   - {fileID: 74862734}
   m_Father: {fileID: 963194228}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &177311952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177311950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b9622afc928ac4e9756d288603b87c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maceKnob: {fileID: 2058083002}
 --- !u!1 &190922024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1720,36 +1734,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 511477552}
   m_CullTransparentMesh: 0
---- !u!1 &524576053
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 524576054}
-  m_Layer: 0
-  m_Name: HookHolster
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &524576054
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524576053}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.29999995, y: -0.41400003, z: 0.6130003}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_Children: []
-  m_Father: {fileID: 963194228}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &526055535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,9 +1878,9 @@ RectTransform:
   m_Father: {fileID: 1647164535}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.33200002, y: 0.1024477}
-  m_AnchorMax: {x: 0.33200002, y: 0.1024477}
-  m_AnchoredPosition: {x: -135.23999, y: -149.27477}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &556147319
@@ -3107,7 +3091,7 @@ GameObject:
   - component: {fileID: 887634037}
   - component: {fileID: 887634038}
   m_Layer: 0
-  m_Name: MeleeWeapon
+  m_Name: Mace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3121,7 +3105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887634036}
   m_LocalRotation: {x: 0.38268343, y: 0.000000014901161, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0.544, y: -0.54999995, z: 0.54}
+  m_LocalPosition: {x: 0.544, y: -0.55, z: 0.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 271236234}
@@ -3570,7 +3554,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &956646488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3856,7 +3840,6 @@ Transform:
   m_LocalPosition: {x: -0.158, y: 0.51100004, z: -0.32799995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 524576054}
   - {fileID: 1728154678}
   - {fileID: 177311951}
   m_Father: {fileID: 232929257}
@@ -6738,9 +6721,9 @@ RectTransform:
   m_Father: {fileID: 663156573}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 306, y: 52.89}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1649466689
@@ -6870,9 +6853,9 @@ RectTransform:
   m_Father: {fileID: 1647164535}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.33200002, y: 0.1024477}
-  m_AnchorMax: {x: 0.33200002, y: 0.1024477}
-  m_AnchoredPosition: {x: -135.23999, y: -149.27477}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1669839222
@@ -7203,7 +7186,7 @@ Transform:
   - {fileID: 526055536}
   - {fileID: 157550474}
   m_Father: {fileID: 963194228}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -150, z: 0}
 --- !u!23 &1728154679
 MeshRenderer:
@@ -13564,9 +13547,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058083001}
-  m_LocalRotation: {x: 0.01128952, y: 0.9650065, z: -0.04213304, w: 0.25857276}
-  m_LocalPosition: {x: 0.2559998, y: 0.9250001, z: -1.3569996}
-  m_LocalScale: {x: 0.5000006, y: 0.49999994, z: 0.50000066}
+  m_LocalRotation: {x: -0.03777545, y: 0.4995242, z: -0.021809675, w: -0.8652011}
+  m_LocalPosition: {x: 0.37, y: 1.028, z: -1.301}
+  m_LocalScale: {x: 0.5000006, y: 0.4999999, z: 0.5000006}
   m_Children:
   - {fileID: 1252194861}
   - {fileID: 1455893421}
@@ -13574,8 +13557,8 @@ Transform:
   - {fileID: 1281693020}
   - {fileID: 1802973518}
   - {fileID: 2065589745}
-  m_Father: {fileID: 2131103186}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2058083003
 Rigidbody:
@@ -13603,7 +13586,7 @@ SpringJoint:
   m_ConnectedBody: {fileID: 1998703450}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 1.5499413, y: 0.23870823, z: 22.154295}
+  m_ConnectedAnchor: {x: -1.618232, y: 0.50152254, z: 20.483805}
   serializedVersion: 2
   m_Spring: 50
   m_Damper: 0
@@ -13612,7 +13595,7 @@ SpringJoint:
   m_Tolerance: 0.025
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
@@ -13887,7 +13870,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 232929257}
-  - {fileID: 2058083002}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
