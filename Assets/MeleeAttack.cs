@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class MeleeAttack : StateMachineBehaviour
 {
-
-    private bool isGoingForNextAttack = false;
     private Transform mace;
     private Transform maceKnob;
     private SpringJoint joint;
+    private float timeAvailableToInitNextAttack;
+    private float animationLength;
+    private float counter = 0f;
 
+    public int attackId = 1;
     public float maceSpeed;
     public float offsetX;
     public float zPositionRelativeToTheCamera;
+    public float percentageRequiredToRegisterNextAttack = 0.5f;
 
-    private float animationLength;
-
-    private float counter = 0f;
+   // OnStateMachineEnter denenebilir.
 
     private Vector3 maceKnobConnectedAnchor;
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         WeaponHolster.instance.parentMace();
@@ -26,52 +28,44 @@ public class MeleeAttack : StateMachineBehaviour
         saveJoint();
         destroyJoint();
 
+        animator.SetBool("GoingForNextAttack", false);
+
         animationLength = stateInfo.length;
+        timeAvailableToInitNextAttack = animationLength * percentageRequiredToRegisterNextAttack;
     }
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+
         if (Input.GetMouseButtonDown(0))
         {
-            isGoingForNextAttack = true;
+            animator.SetBool("GoingForNextAttack", true);
         }
 
-
-        //Vector3 direction = mace.position - Camera.main.transform.position;
-
-        //Vector3 nextPos = Camera.main.transform.forward  + Camera.main.transform.position + direction;
-        //maceKnob.position = Vector3.MoveTowards(maceKnob.position, nextPos, Time.deltaTime * maceSpeed);
-
-
-        //y = cameraPos.position.y
 
         Vector3 nextPos = Vector3.zero;
         Transform cameraPos = Camera.main.transform;
-        if (counter <= animationLength/2f)
+        if (counter <= animationLength / 2f)
         {
             nextPos = cameraPos.forward * zPositionRelativeToTheCamera + cameraPos.position + cameraPos.right * offsetX;
         }
-        else if(counter > animationLength/2f)
+        else if (counter > animationLength / 2f)
         {
-            nextPos =  cameraPos.position - cameraPos.right * offsetX;
+            nextPos = cameraPos.position - cameraPos.right * offsetX;
         }
         maceKnob.position = Vector3.MoveTowards(maceKnob.position, nextPos, maceSpeed * Time.deltaTime);
         counter += Time.deltaTime;
 
+     
+        
 
     }
 
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
-
         WeaponHolster.instance.unParentMace();
         addJoint();
         counter = 0f;
-        if (isGoingForNextAttack)
-        {
-            animator.SetTrigger("MeleeAttack2"); //Buradaki 2 yi kodla falan çekip standart haline getirebilirsin.
-        }
     }
 
     private void addJoint()
@@ -79,13 +73,15 @@ public class MeleeAttack : StateMachineBehaviour
         Rigidbody maceHandleRb = mace.GetComponentInChildren<Rigidbody>();
 
         SpringJoint addedJoint = maceKnob.gameObject.AddComponent<SpringJoint>();
-        addedJoint.autoConfigureConnectedAnchor = false;
-        addedJoint.spring = 50f;
-        addedJoint.damper = 0f;
+        if (addedJoint)
+        {
+            addedJoint.autoConfigureConnectedAnchor = false;
+            addedJoint.spring = 50f;
+            addedJoint.damper = 0f;
 
-        addedJoint.connectedAnchor = maceKnobConnectedAnchor;
-        addedJoint.connectedBody = maceHandleRb;
-
+            addedJoint.connectedAnchor = maceKnobConnectedAnchor;
+            addedJoint.connectedBody = maceHandleRb;
+        }
 
 
     }
@@ -109,14 +105,19 @@ public class MeleeAttack : StateMachineBehaviour
     public void destroyJoint()
     {
         SpringJoint maceJoint = maceKnob.GetComponent<SpringJoint>();
-        Destroy(maceJoint);
+        if (maceJoint)
+        {
+            Destroy(maceJoint);
+        }
     }
 
     public void saveJoint()
     {
         SpringJoint maceJoint = maceKnob.GetComponent<SpringJoint>();
-        maceKnobConnectedAnchor = maceJoint.connectedAnchor;
-        Debug.Log(maceKnobConnectedAnchor);
+        if (maceJoint)
+        {
+            maceKnobConnectedAnchor = maceJoint.connectedAnchor;
+        }
     }
 
 }
