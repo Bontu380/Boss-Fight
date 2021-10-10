@@ -19,14 +19,6 @@ public class WeaponHolster : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    //void Start()
-    //{
-
-    //}
-    //void Update()
-    //{
-
-    //}
 
     public void parentMace()
     {

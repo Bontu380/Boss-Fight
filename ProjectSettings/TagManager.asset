@@ -12,6 +12,7 @@ TagManager:
   - Ground
   - Arm
   - Rocket
+  - MeleeWeapon
   layers:
   - Default
   - TransparentFX

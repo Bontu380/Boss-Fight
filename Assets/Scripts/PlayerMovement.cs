@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
        // playerRb.MovePosition(playerRb.position + movementVector * currentSpeed * Time.deltaTime);
 
 
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             if (!isCrouching)
             {
@@ -146,4 +146,5 @@ public class PlayerMovement : MonoBehaviour
     {
         Camera.main.GetComponent<GrapplingHook>().setHookOnItsWay();
     }
+
 }

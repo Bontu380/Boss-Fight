@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mace : MonoBehaviour
+public class Mace : MeleeWeapon
 {
 
     public Transform junctionMaceRigidbody;
@@ -10,10 +10,14 @@ public class Mace : MonoBehaviour
 
     public LineRenderer lineRenderer;
 
-
     private void LateUpdate()
     {
         lineRenderer.SetPosition(0, junctionHandleRigidbody.position);
         lineRenderer.SetPosition(1, junctionMaceRigidbody.position);    
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawSphere(attackPoint.position, attackRadius);
     }
 }

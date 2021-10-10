@@ -36,7 +36,7 @@ public class MeleeAttack : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)) // counter percentage den büyükse diye eklenecek
         {
             animator.SetBool("GoingForNextAttack", true);
         }
