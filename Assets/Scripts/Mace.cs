@@ -10,6 +10,26 @@ public class Mace : MeleeWeapon
 
     public LineRenderer lineRenderer;
 
+    private void OnEnable()
+    {
+        //Burada animasyon da oynatılabilir. Silahı çekme animasyonu
+
+        if(WeaponHolster.instance.maceKnob)
+        {
+            WeaponHolster.instance.unParentMace();
+            WeaponHolster.instance.maceKnob.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (WeaponHolster.instance.maceKnob)
+        {
+
+            WeaponHolster.instance.maceKnob.gameObject.SetActive(false);
+            WeaponHolster.instance.parentMace();
+        }       
+    }
     private void LateUpdate()
     {
         lineRenderer.SetPosition(0, junctionHandleRigidbody.position);

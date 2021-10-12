@@ -237,7 +237,7 @@ public class Gun : MonoBehaviour
 
         currentBullet = clipCapacity;
         animator.SetBool("Reloading", false);
-        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdleUzi"))
         {
             yield return null;
         }

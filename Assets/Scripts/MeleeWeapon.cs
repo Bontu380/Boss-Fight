@@ -28,10 +28,13 @@ public abstract class MeleeWeapon : MonoBehaviour
                 }
             }
 
-            Rigidbody hitObjectRb = hitObject.GetComponent<Rigidbody>();
-            if (hitObjectRb)
+            if (!hitObject.CompareTag("Player"))
             {
-                hitObjectRb.AddExplosionForce(knockback,attackPoint.position,attackRadius);
+                Rigidbody hitObjectRb = hitObject.GetComponent<Rigidbody>();
+                if (hitObjectRb)
+                {
+                    hitObjectRb.AddExplosionForce(knockback, attackPoint.position, attackRadius);
+                }
             }
         }
 

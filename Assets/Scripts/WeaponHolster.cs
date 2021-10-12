@@ -49,18 +49,24 @@ public class WeaponHolster : MonoBehaviour
     }
     public void parentMace()
     {
-        maceKnob.transform.parent = transform;
+        if (maceKnob)
+        {
+            maceKnob.transform.parent = transform;
+        }
     }
 
     public void unParentMace()
     {
-        maceKnob.transform.parent = null;
+        if (maceKnob)
+        {
+            maceKnob.transform.parent = null;
+        }
     }
 
     public void switchWeapon(int index)
     {
 
-        //Animator mevzusu girecek buraya
+        //Animator mevzusu girecek buraya, şu anda oynamakta olan animasyonu kesmeli yoksa takılıyor. Mesela uzi ile ateş ederken switch atınca mace ile ateş animasyonu oluyor salakça
 
 
         weapons[currentActiveWeaponIndex].gameObject.SetActive(false);
