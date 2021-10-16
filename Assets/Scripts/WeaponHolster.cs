@@ -67,19 +67,21 @@ public class WeaponHolster : MonoBehaviour
     {
 
         //Animator mevzusu girecek buraya, şu anda oynamakta olan animasyonu kesmeli yoksa takılıyor. Mesela uzi ile ateş ederken switch atınca mace ile ateş animasyonu oluyor salakça
-
-
-        weapons[currentActiveWeaponIndex].gameObject.SetActive(false);
-        weapons[index].gameObject.SetActive(true);
-        currentActiveWeaponIndex = index;
-
-        if (weapons[currentActiveWeaponIndex].CompareTag("Gun"))
+        AnimatorStateInfo currentStateInfo = playerAnim.GetCurrentAnimatorStateInfo(0);
+        if (currentStateInfo.IsName("MeleeStateIdle") || currentStateInfo.IsName("PlayerIdleUzi"))
         {
-            playerAnim.SetBool("inMeleeState", false);
-        }
-        else
-        {
-            playerAnim.SetBool("inMeleeState", true);
+            weapons[currentActiveWeaponIndex].gameObject.SetActive(false);
+            weapons[index].gameObject.SetActive(true);
+            currentActiveWeaponIndex = index;
+
+            if (weapons[currentActiveWeaponIndex].CompareTag("Gun"))
+            {
+                playerAnim.SetBool("inMeleeState", false);
+            }
+            else
+            {
+                playerAnim.SetBool("inMeleeState", true);
+            }
         }
     }
 
