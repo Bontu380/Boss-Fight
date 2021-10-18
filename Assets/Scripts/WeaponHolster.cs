@@ -70,6 +70,7 @@ public class WeaponHolster : MonoBehaviour
         AnimatorStateInfo currentStateInfo = playerAnim.GetCurrentAnimatorStateInfo(0);
         if (currentStateInfo.IsName("MeleeStateIdle") || currentStateInfo.IsName("PlayerIdleUzi"))
         {
+            Debug.Log(currentActiveWeaponIndex);
             weapons[currentActiveWeaponIndex].gameObject.SetActive(false);
             weapons[index].gameObject.SetActive(true);
             currentActiveWeaponIndex = index;
@@ -95,6 +96,10 @@ public class WeaponHolster : MonoBehaviour
             if (child.CompareTag("Gun") || child.CompareTag("MeleeWeapon"))
             {
                 weapons.Add(child);
+                if (child.gameObject.activeSelf)
+                {
+                    currentActiveWeaponIndex = i;
+                }
             }
         }
     }

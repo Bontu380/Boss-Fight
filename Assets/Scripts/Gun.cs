@@ -30,7 +30,7 @@ public class Gun : MonoBehaviour
     public float recoilLimit = 3f;
     public float recoilCooldownRate = 0.3f;
 
-    public Transform test;
+
     private void Start()
     {
         nextBulletTimeCounter = fireRateRatio;
@@ -126,51 +126,12 @@ public class Gun : MonoBehaviour
             }
 
 
-
-            //currentRecoilX *= -1f;
-            //if(currentRecoilX <= 0f)
-            //{
-            //    currentRecoilX += recoilLimit;
-            //    if (currentRecoilX > recoilLimit)
-            //    {
-            //        currentRecoilX = recoilLimit;
-            //    }
-            //}
-            //else
-            //{
-            //    currentRecoilX -= recoilLimit;
-            //    if (currentRecoilX < -recoilLimit)
-            //    {
-            //        currentRecoilX = -recoilLimit;
-            //    }
-            //}
-
-            //currentRecoilY *= -1f;
-            //if (currentRecoilY <= 0f)
-            //{
-            //    currentRecoilY += recoilLimit;
-            //    if (currentRecoilY > recoilLimit)
-            //    {
-            //        currentRecoilY = recoilLimit;
-            //    }
-            //}
-            //else
-            //{
-            //    currentRecoilY -= recoilLimit;
-            //    if (currentRecoilY < -recoilLimit)
-            //    {
-            //        currentRecoilY = -recoilLimit;
-            //    }
-            //}
-
-
             Vector3 targetPoint = (playerCamera.transform.forward * zOffsetFromFirePoint +
                                  playerCamera.transform.right *  currentRecoilX +
                                  playerCamera.transform.up *  currentRecoilY) + playerCamera.transform.position;
 
             Vector3 direction = (targetPoint - playerCamera.transform.position);
 
-            test.transform.position = targetPoint;
 
             RaycastHit hit;
             if (Physics.Raycast(playerCamera.transform.position, direction, out hit))

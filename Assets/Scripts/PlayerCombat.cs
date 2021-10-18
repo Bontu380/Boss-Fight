@@ -26,8 +26,10 @@ public class PlayerCombat : MonoBehaviour
 
     public void performMeleeAttack()
     {
-        Debug.Log(activeMeleeWeapon.name);
-        activeMeleeWeapon.meleeAttack();
+        if (activeMeleeWeapon)
+        {
+            activeMeleeWeapon.meleeAttack();
+        }
     }
     public void getActiveWeapon()
     {

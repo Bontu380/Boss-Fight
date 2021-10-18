@@ -10,14 +10,35 @@ public class Mace : MeleeWeapon
 
     public LineRenderer lineRenderer;
 
+    private Vector3 maceKnobDefaultPosition;
+
+    private bool maceKnobInitiated = false;
     private void OnEnable()
     {
         //Burada animasyon da oynatılabilir. Silahı çekme animasyonu
+        if (!maceKnobInitiated)
+        {
+            float distance = Vector3.Distance(junctionMaceRigidbody.position, junctionHandleRigidbody.position);
+            Vector3 direction = junctionMaceRigidbody.position - junctionHandleRigidbody.position;
+            maceKnobDefaultPosition = junctionHandleRigidbody.position + (distance * direction);
+
+         
+
+            junctionMaceRigidbody.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+            maceKnobInitiated = true;
+            return;
+
+        }
+
 
         if(WeaponHolster.instance.maceKnob)
         {
+
             WeaponHolster.instance.unParentMace();
             WeaponHolster.instance.maceKnob.gameObject.SetActive(true);
+            junctionMaceRigidbody.position = maceKnobDefaultPosition;
+
         }
     }
 
@@ -25,7 +46,6 @@ public class Mace : MeleeWeapon
     {
         if (WeaponHolster.instance.maceKnob)
         {
-
             WeaponHolster.instance.maceKnob.gameObject.SetActive(false);
             WeaponHolster.instance.parentMace();
         }       
