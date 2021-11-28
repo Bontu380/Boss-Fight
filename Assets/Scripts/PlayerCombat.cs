@@ -26,10 +26,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void performMeleeAttack()
     {
-        if (activeMeleeWeapon)
-        {
+        Debug.Log("Performing melee attack");
+        //if (activeMeleeWeapon)
+        //{
             activeMeleeWeapon.meleeAttack();
-        }
+        //}
     }
     public void getActiveWeapon()
     {
@@ -39,6 +40,7 @@ public class PlayerCombat : MonoBehaviour
             Transform child = holster.GetChild(i);
             if (child.gameObject.activeSelf)
             {
+                Debug.Log(child.name);
                 if (child.CompareTag("MeleeWeapon"))
                 {
                     activeMeleeWeapon = child.GetComponent<MeleeWeapon>();         

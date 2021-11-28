@@ -7,10 +7,45 @@ public class TimeRewindGun : MonoBehaviour
     private bool isRewinding;
     private Rewindable hitRewindableTarget;
 
+    public float gunPowerInSeconds = 5f;
+    public float minimumPowerRequiredToUse = 1.5f;
 
- 
+    private float currentGunPower;
+
+    private void Start()
+    {
+        currentGunPower = gunPowerInSeconds;
+    }
+
     void Update() //Line renderer will be added after functionality is done, it can be done in LateUpdate maybe.
     {
+
+        if(currentGunPower <= minimumPowerRequiredToUse && !isRewinding)
+        {
+            hitRewindableTarget.stopRewind();
+            return;
+        }
+
+        if (isRewinding)
+        {
+            currentGunPower -= Time.deltaTime;
+            if(currentGunPower <= 0f)
+            {
+                hitRewindableTarget.stopRewind();
+                isRewinding = false;
+                return;
+            }
+        }
+        else
+        {
+            if(currentGunPower < gunPowerInSeconds)
+            {
+                currentGunPower += Time.deltaTime;
+            }
+        }
+
+
+
         if (Input.GetMouseButton(0) && !isRewinding)
         {
             Transform camPos = Camera.main.transform;
@@ -35,5 +70,7 @@ public class TimeRewindGun : MonoBehaviour
             hitRewindableTarget = null;
             isRewinding = false;
         }
+
+      
     }
 }

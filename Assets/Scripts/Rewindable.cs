@@ -9,8 +9,7 @@ public class Rewindable : MonoBehaviour
     private Rigidbody objectRb;
     private NavMeshAgent agent;
     private bool isRewinding = false;
-    private PointInTime[] pointsInTime;
-    private float counter = 0f;
+    private List<PointInTime> pointsInTime;
 
     public float timeRewindLimit = 5f; //In seconds.
 
@@ -19,53 +18,61 @@ public class Rewindable : MonoBehaviour
     {
         objectRb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-          
 
-        int arrayLength = (int)(timeRewindLimit / Time.fixedDeltaTime );
-       // Debug.Log(arrayLength);
-        pointsInTime = new PointInTime[arrayLength];
+        pointsInTime = new List<PointInTime>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (isRewinding)
-        {
-
-        }
- 
-    }
-
     private void FixedUpdate()
     {
         if (isRewinding)
         {
-            return;
-        }
-
-        if (counter >= timeRewindLimit)
-        {
-            counter = 0f;
+            rewind();
         }
         else
         {
-            //Debug.Log((int)(counter / Time.fixedDeltaTime));
-            PointInTime point = new PointInTime(transform.position, transform.rotation);
-            pointsInTime[(int)counter] = point;
-            counter += Time.fixedDeltaTime;
+            record();
         }
+    }
+
+    public void rewind()
+    {
+
+            PointInTime currentPoint = pointsInTime[0];
+            if (currentPoint == null)
+            {
+                stopRewind();
+                return;
+
+            }
+            pointsInTime.RemoveAt(0);
+
+            transform.position = currentPoint.position;
+            transform.rotation = currentPoint.rotation;
+    
+        
+    }
+
+    public void record()
+    {
+        if (pointsInTime.Count > Mathf.Round(timeRewindLimit / Time.fixedDeltaTime))
+        {
+            pointsInTime.RemoveAt(pointsInTime.Count - 1);
+        }
+
+        pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation));
     }
 
     public void startRewind()
     {
+        if (agent)
+        {
+            agent.enabled = false;
+        }
         if (objectRb)
         {
             objectRb.isKinematic = true;
+            objectRb.velocity = Vector3.zero;
         }
-        if (agent)
-        {
-            agent.enabled = true;
-        }
+      
         isRewinding = true;
     }
 
@@ -77,7 +84,7 @@ public class Rewindable : MonoBehaviour
         }
         if (agent)
         {
-            agent.enabled = false;
+            agent.enabled = true;
         }
         isRewinding = false;
     }

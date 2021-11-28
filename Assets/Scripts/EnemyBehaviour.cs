@@ -85,12 +85,14 @@ public class EnemyBehaviour : MonoBehaviour
                     enemyRb.velocity = Vector3.zero;
                     if (rocketTimeCounter >= rocketCooldown)
                     {
-                        agent.isStopped = true; ;
-                        lookAtPlayer();
-                        StartCoroutine(fireRockets());
-                        rocketTimeCounter = 0f;
-                        agent.isStopped = false;
-
+                        if (agent)
+                        {
+                            agent.isStopped = true; ;
+                            lookAtPlayer();
+                            StartCoroutine(fireRockets());
+                            rocketTimeCounter = 0f;
+                            agent.isStopped = false;
+                        }
                     }
                 }
                 checkIsPlayerLost();

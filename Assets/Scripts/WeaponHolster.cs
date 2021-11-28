@@ -9,8 +9,8 @@ public class WeaponHolster : MonoBehaviour
     public Animator playerAnim;
 
     //Asagidaki ikisi private olacak tamamlandıktan sonra
-    public int currentActiveWeaponIndex = 0;
-    public List<Transform> weapons;
+    private int currentActiveWeaponIndex = 0;
+    private List<Transform> weapons;
     private void Awake()
     {
         if (instance == null)
@@ -44,12 +44,12 @@ public class WeaponHolster : MonoBehaviour
             {
                 switchWeapon(currentActiveWeaponIndex - 1);
             }
-
+   
         }
     }
     public void parentMace()
     {
-        if (maceKnob)
+        if (maceKnob.gameObject.activeSelf)
         {
             maceKnob.transform.parent = transform;
         }
@@ -66,11 +66,11 @@ public class WeaponHolster : MonoBehaviour
     public void switchWeapon(int index)
     {
 
-        //Animator mevzusu girecek buraya, şu anda oynamakta olan animasyonu kesmeli yoksa takılıyor. Mesela uzi ile ateş ederken switch atınca mace ile ateş animasyonu oluyor salakça
+        
         AnimatorStateInfo currentStateInfo = playerAnim.GetCurrentAnimatorStateInfo(0);
         if (currentStateInfo.IsName("MeleeStateIdle") || currentStateInfo.IsName("PlayerIdleUzi"))
         {
-            Debug.Log(currentActiveWeaponIndex);
+            //Debug.Log(currentActiveWeaponIndex);
             weapons[currentActiveWeaponIndex].gameObject.SetActive(false);
             weapons[index].gameObject.SetActive(true);
             currentActiveWeaponIndex = index;
@@ -83,6 +83,7 @@ public class WeaponHolster : MonoBehaviour
             {
                 playerAnim.SetBool("inMeleeState", true);
             }
+            PlayerCombat.instance.getActiveWeapon();
         }
     }
 
